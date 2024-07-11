@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client'
 import SignupForm from './Login.tsx'
 import Home from './home.tsx'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import TaskPage from './tasks.tsx'
 import './index.css'
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -13,8 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<SignupForm />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/tasks" element={<TaskPage />} />
       </Routes>
     </BrowserRouter>
     </ThemeProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )

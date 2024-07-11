@@ -27,6 +27,10 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('change_password/', views.change_password, name='change_password'),
+    path('department_tasks/', views.get_department_tasks, name='department_tasks'),
+    path('getdeptbyid/', views.get_dept_by_id, name='getdeptbyid'),
+    path('getuserbuid/', views.get_user_by_id, name='getuserbyid'),
+
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html'), name='index'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

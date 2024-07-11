@@ -9,7 +9,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import update_session_auth_hash
-from .serializers import ChangePasswordSerializer
+from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer
+from .models import CustomUser, Task, Department
+from django.core import serializers  
 
 User = get_user_model()
 
@@ -51,4 +53,51 @@ def change_password(request):
 @api_view(['POST'])
 def logout_view(request):
     logout(request)
-    return JsonResponse({'message': 'Logout successful'})       
+    return JsonResponse({'message': 'Logout successful'})
+
+
+@api_view(['POST'])
+def get_department_tasks(request):
+    try:
+        email = request.data.get('email')
+        user = CustomUser.objects.get(email=email)
+        departments = user.department.all()
+        tasks = Task.objects.filter(department__in=departments)
+        serializer = TaskSerializer(tasks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    except CustomUser.DoesNotExist:
+        return Response({'error': 'User does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(e)
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+def get_dept_by_id(request):
+    try:
+        dept_id = request.data.get('department_id')
+        department = Department.objects.get(id=dept_id)
+        serializer = DepartmentSerializer(department)
+        return Response(serializer.data)
+
+    except CustomUser.DoesNotExist:
+        return Response({'error': 'Department does not exist.'}, status=404)
+    except Exception as e:
+        print(e)
+        return Response({'error': str(e)}, status=500)
+    
+@api_view(['POST'])
+def get_user_by_id(request):
+    try:
+        print(request.data)
+        user_id = request.data.get('user_id')
+        user = User.objects.get(id=user_id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+    except CustomUser.DoesNotExist:
+        return Response({'error': 'User does not exist.'}, status=404)
+    except Exception as e:
+        print(e)
+        return Response({'error': str(e)}, status=500)
+    

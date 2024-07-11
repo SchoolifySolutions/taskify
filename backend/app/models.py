@@ -27,11 +27,27 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+
+
+class Department(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = _('department')
+        verbose_name_plural = _('departments')
+
+    def __str__(self):
+        return self.name
+    
+
 class CustomUser(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     
     # Generate 6-digit random ID
     id = models.IntegerField(default=random.randint(100000, 999999), unique=True, primary_key=True, editable=False)
+    pfp = models.TextField(default='https://i.ibb.co/R932cKN/logo.png')
+    initials = models.CharField(max_length=3, default='')
+    department = models.ManyToManyField(Department, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -56,19 +72,7 @@ class CustomUser(AbstractUser):
         blank=True,
         verbose_name=_('user permissions'),
         help_text=_('Specific permissions for this user.'),
-    )
-
-
-class Department(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    class Meta:
-        verbose_name = _('department')
-        verbose_name_plural = _('departments')
-
-    def __str__(self):
-        return self.name
-    
+    )    
     
 class Task(models.Model):
     assigned_users = models.ManyToManyField(
@@ -92,6 +96,7 @@ class Task(models.Model):
     task_description = models.TextField()
     task_due_date = models.DateTimeField()
     task_status = models.IntegerField(default=0)
+    priority = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = _('task')

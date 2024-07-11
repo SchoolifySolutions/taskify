@@ -4,7 +4,8 @@ import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
 import { House,CircleCheckBig,Users,ClipboardList,ClipboardPen,ClipboardPenLine } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
+import logo from "../assets/full-logo.png"
+import logo2 from "../assets/logo.png"
 
 
 interface Props {
@@ -77,9 +78,9 @@ export default function Sidebar(props:Props) {
     ];
 
     return (
-        <div className="w-[15vw] fixed top-0 left-0 h-screen bg-dark-3 ">
-            <a href="/">
-            <h1 className="ml-[1.5vw] font-bold text-[3.7ch] mt-[2vh]">Taskify</h1>
+        <div className="w-[15vw]  bg-dark-3 ">
+            <a href="/" className="flex mx-auto w-fit mb-[2vh] user-select-class">
+              <img src={logo} className=" mt-[5vh] w-[9vw] h-fit"></img>
             </a>
             <div className="w-full h-[90vh]  relative">
             <div className=" absolute top-0 left-0 w-full h-0.25 bg-n-6 pointer-events-none " />
@@ -87,7 +88,7 @@ export default function Sidebar(props:Props) {
           {menuItems.map((item, index) => (
             <li key={index} className="my-[2vh] flex items-center">
               {React.cloneElement(menuIcons[index], { color: props.name === item ? '#5369ed' : 'currentColor' })}
-              <a href={links[index]} className={`ml-2 text-[0.9vw] transition-all duration-500 font hover:text-white ${props.name === item ? '!text-[#5369ed] !text-[1.2vw]' : ''}`}>
+              <a href={links[index]} className={`ml-2 text-[0.9vw] transition-all duration-500 font hover:text-white ${props.name === item ? '!text-[#5369ed] !text-[1vw]' : ''}`}>
                 {item}
               </a>
             </li>
@@ -99,8 +100,8 @@ export default function Sidebar(props:Props) {
                 <button onClick={()=>{setPopup(!popup)}} className={`w-full absolute bottom-0 flex left-0 h-[7vh] transition-all text-gray-400 hover:text-white cursor-pointer text-center pt-[2vh] justify-inbetween ${props.name === "Profile" ? '!text-[#a46bec] font-bold' : ''}`}>
                 
                     <Avatar className="w-[5vh] h-[5vh] object-cover object-top rounded-[100%] -mt-[1vh] mr-[1vw] ml-[1vw]">
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
+                    <AvatarImage src={logo2} />
+                        <AvatarFallback>{usrData["Initials"]}</AvatarFallback>
                     </Avatar>
                     <h1 className="text-[1vw]">{usrData["Username"]}</h1>
                 </button>
