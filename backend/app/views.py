@@ -29,7 +29,7 @@ class LoginView(APIView):
         if user is not None:
             login(request, user)
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'Email': username, 'Username': user.username,'token': token.key})
+            return Response({'Email': username,'Id':user.id, 'Username': user.username,'token': token.key})
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         
