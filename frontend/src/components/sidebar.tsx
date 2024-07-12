@@ -78,7 +78,7 @@ export default function Sidebar(props:Props) {
     ];
 
     return (
-        <div className="w-[15vw]  bg-dark-3 ">
+        <div className="w-[15vw] fixed top-0 left-0  bg-dark-3 ">
             <a href="/" className="flex mx-auto w-fit mb-[2vh] user-select-class">
               <img src={logo} className=" mt-[5vh] w-[9vw] h-fit"></img>
             </a>
