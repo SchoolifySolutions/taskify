@@ -48,7 +48,7 @@ class CustomUser(AbstractUser):
     pfp = models.TextField(default='https://i.ibb.co/R932cKN/logo.png')
     initials = models.CharField(max_length=3, default='')
     department = models.ManyToManyField(Department, blank=True)
-
+    contract = models.FileField(upload_to='contracts/', blank=True, null=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

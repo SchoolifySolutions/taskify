@@ -53,16 +53,14 @@ export default function Sidebar(props:Props) {
         <ClipboardList key="ClipboardList" />,
         <ClipboardPen key="ClipboardPen" />,
         <ClipboardPenLine key="ClipboardPenLine" />,
-        <CircleCheckBig key="CircleCheckBig" />,
         <Users key="Users" />,
       ];
     
     const menuItems = [
         "Home",
         "Tasks",
-        "To Do",
-        "In Progress",
-        "Completed",
+        "Management",
+        "Department",
         "Team",
 
     ];
@@ -70,11 +68,9 @@ export default function Sidebar(props:Props) {
     const links = [
         "/home",
         "/tasks",
-        "/todo",
-        "/inprogress",
-        "/completed",
+        "/management",
+        "/department",
         "/team",
-
     ];
 
     return (

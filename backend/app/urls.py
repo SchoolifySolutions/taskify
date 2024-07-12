@@ -30,7 +30,9 @@ urlpatterns = [
     path('department_tasks/', views.get_department_tasks, name='department_tasks'),
     path('getdeptbyid/', views.get_dept_by_id, name='getdeptbyid'),
     path('getuserbuid/', views.get_user_by_id, name='getuserbyid'),
-
+    path('changetaskststus/', views.change_task_status, name='changetaskstatus'),
+    path('deletetask/', views.delete_task, name='deletetask'),
+    path('yourtasks/', views.your_tasks, name='your_tasks'),
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html'), name='index'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

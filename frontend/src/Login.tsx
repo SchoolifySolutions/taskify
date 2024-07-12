@@ -22,7 +22,8 @@ const SignupForm = () => {
       });
       setErr("");
       console.log(response);
-      const token = response.data.token;
+      const token = response.data["Token"];
+      console.log(token)
       axios.defaults.headers.common["Authorization"] = `Token ${token}`;
       localStorage.setItem("token", JSON.stringify(token));
       localStorage.setItem("Data", JSON.stringify(response.data));

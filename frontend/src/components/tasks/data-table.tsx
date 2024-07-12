@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import {
   ColumnDef,
@@ -68,13 +66,13 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="space-y-4 w-full  ">
+    <div className="space-y-4">
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow  key={headerGroup.id}>
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id} colSpan={header.colSpan}>
@@ -94,7 +92,6 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >

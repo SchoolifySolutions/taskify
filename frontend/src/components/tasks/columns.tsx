@@ -5,6 +5,15 @@ import { labels, priorities, statuses } from "./data";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Task } from "./schema";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+const statusChange = (status: string) => {
+  localStorage.setItem("statusChange", JSON.stringify(status));
+};
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -65,19 +74,43 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const status = statuses.find((status) => status.value === row.getValue("status"));
+      const status = statuses.find(
+        (status) => status.value === row.getValue("status")
+      );
 
       if (!status) {
         return null;
       }
 
       return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
-        </div>
+        <Popover>
+          <div className="flex w-[100px] items-center">
+            <PopoverTrigger className="flex">
+              {status.icon && (
+                <status.icon
+                  className={`mr-2 h-4 w-4 my-au text-muted-foreground ${status.class}`}
+                />
+              )}
+              <span className={`${status.class}`}>{status.label}</span>
+            </PopoverTrigger>
+            <PopoverContent className="w-fit bg-black px-[0.5vw]">
+              {statuses.map((task) => (
+                <div
+                  key={task.value}
+                  onClick={() => statusChange(task.label)}
+                  className={`rounded-lg px-[1vw] py-[0.5vh] hover:bg-gray-400/25 flex ${task.class}`}
+                >
+                  {task.icon && (
+                    <task.icon
+                      className={`mr-2 h-4 w-4 text-muted-foreground my-auto ${task.class}`}
+                    />
+                  )}
+                  {task.label}
+                </div>
+              ))}
+            </PopoverContent>
+          </div>
+        </Popover>
       );
     },
     enableSorting: true,
@@ -107,7 +140,9 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Priority" />
     ),
     cell: ({ row }) => {
-      const priority = priorities.find((priority) => priority.value === row.getValue("priority"));
+      const priority = priorities.find(
+        (priority) => priority.value === row.getValue("priority")
+      );
 
       if (!priority) {
         return null;

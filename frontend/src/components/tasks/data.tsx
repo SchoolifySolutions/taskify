@@ -34,7 +34,7 @@ export const statuses = [
     label: "Stuck",
     icon: CrossCircledIcon,
     department: "Development",
-    class:""
+    class:"text-[red]"
   },
   {
     value: "todo",
@@ -48,21 +48,21 @@ export const statuses = [
     label: "In Progress",
     icon: StopwatchIcon,
     department: "Development",
-    class:""
+    class:"text-[orange]"
   },
   {
     value: "done",
     label: "Done",
     icon: CheckCircledIcon,
     department: "Development",
-    class:""
+    class:"text-[limegreen]"
   },
   {
     value: "canceled",
     label: "Canceled",
     icon: CrossCircledIcon,
     department: "Development",
-    class:""
+    class:"text-[gray]"
   },
 ];
 
@@ -91,8 +91,8 @@ export const priorities = [
 ];
 
 export const departments = [
-  { value: 1, label: 'IT and Infrastructure'},
-  { value: 2, label: 'Web Development' },
-  { value: 3, label: 'Sales' },
+  { value: 'IT and Infrastructure', label: 'IT and Infrastructure'},
+  { value: 'Web Development', label: 'Web Development' },
+  { value: 'Sales', label: 'Sales' },
   // Other departments
 ];

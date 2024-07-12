@@ -107,12 +107,10 @@ export default function TaskPage() {
   };
 
   useEffect(() => {
-      fetchData();
-      window.addEventListener('storage', () => {
-        console.log(localStorage.getItem('statusChange'));
-      });
-  }, []);
- 
+    console.log(localStorage.getItem("statusChange"));
+    fetchData();
+    localStorage.setItem("statusChange", JSON.stringify("false"));
+  }, [localStorage.getItem("statusChange")]);
 
 
   const formatDepartments = (departments: any[]) => {
@@ -122,21 +120,21 @@ export default function TaskPage() {
     const moreDepartmentsCount = departments.length - 2;
     
     if (moreDepartmentsCount > 0) {
-        return `${firstTwoDepartments} department(s) and ${moreDepartmentsCount} more`;
+        return `${firstTwoDepartments} and ${moreDepartmentsCount} more`;
     } else {
-        return `${firstTwoDepartments} department(s)`;
+        return firstTwoDepartments;
     }
 };
 
   return (
     <div className='flex'>
-      <Sidebar name="Department" />
+      <Sidebar name="Tasks" />
       <div className=" px-[7vw] w-[85vw] h-fit flex-1 flex-col space-y-8 p-8 absolute right-0 top-0 mt-5">
         <div className="flex items-center justify-between space-y-2">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">Department Tasks</h2>
+            <h2 className="text-3xl font-bold tracking-tight">Your Tasks</h2>
             <p className="text-muted-foreground mb-[2vh]">
-              Here are the tasks for the {formatDepartments(usrData.Departments)}.
+              Here are the tasks that are assigned to you by your team lead.
             </p>
           </div>
         </div>

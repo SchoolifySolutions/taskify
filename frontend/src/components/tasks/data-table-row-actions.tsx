@@ -1,7 +1,7 @@
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { useState } from "react";
-
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,6 +19,7 @@ import {
 
 import { labels } from "./data";
 import { taskSchema } from "./schema";
+import { Trash2Icon } from "lucide-react";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -38,6 +39,32 @@ export function DataTableRowActions<TData>({
       label: labelValue,
     }));
   };
+  const handleDelete = async (e: React.MouseEvent, task: any) => {
+    e.preventDefault();
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      console.log(token)
+      if (!token) {
+        throw new Error("Token not found in localStorage");
+      }
+      console.log(task.id)
+      const response = await axios.post(
+        "http://127.0.0.1:8000/deletetask/",
+        {
+          task_id: task.id,
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
+      window.location.reload();
+      console.log(response);
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -45,32 +72,17 @@ export function DataTableRowActions<TData>({
         <Button
           variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          onClick={(e)=>{handleDelete(e,task)}}
         >
-          <DotsHorizontalIcon className="h-4 w-4" />
+          <Trash2Icon className="h-4 w-4" />
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px] !bg-black">
         <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent className="!bg-black">
-            <DropdownMenuRadioGroup value={task.label} onChange={handleLabelChange}>
-              {labels.map((label) => (
-                <DropdownMenuRadioItem key={label.value} value={label.value}>
-                  {label.label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem  onClick={(e)=>{handleDelete(e,task)}}>
           Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
