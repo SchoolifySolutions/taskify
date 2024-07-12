@@ -4,17 +4,6 @@ import Sidebar from './components/sidebar';
 
 import { AlertDestructive } from "./components/Alert";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -36,13 +25,35 @@ import { z } from "zod"
 
 import { columns } from "./components/tasks/columns"
 import { DataTable } from "./components/tasks/data-table"
-import { taskSchema } from "./components/tasks/schema"
+import { taskSchema, Task } from "./components/tasks/schema"
 
+const statuses = [
+  { value: 0, label: "todo" },
+  { value: 1, label: "in progress" },
+  { value: 2, label: "done" },
+  { value: 3, label: "stuck" },
+  { value: 4, label: "canceled" },
+];
 
+const priorities = [
+  { label: "low", value:0 },
+  { label: "medium", value: 1 },
+  { label: "high", value: 2 },
+];
+
+const mapStatus = (status) => {
+  const statusObj = statuses.find(s => s.value === status);
+  return statusObj ? statusObj.label : "Unknown";
+}
+
+const mapPriority = (priority) => {
+  const priorityObj = priorities.find(p => p.value === priority);
+  return priorityObj ? priorityObj.label : "Unknown";
+}
 
 export default function TaskPage() {
   const [usrData, setUsrData] = useState(JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"userType":"Student"}'));
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sequentialId, setSequentialId] = useState(1); // Initialize sequential ID counter
@@ -72,12 +83,18 @@ export default function TaskPage() {
         email: usrData["Email"],
       });
       console.log(response.data);
-      // Assign sequential IDs to tasks
-      const tasksWithSequentialId = response.data.map((task, index) => ({
-        ...task,
-        sequentialId: index + 1,
+      // Format data to fit the schema
+      console.log(mapPriority(response.data[3].priority))
+      const formattedData = response.data.map((task, index) => ({
+        id: task.id.toString(),
+        title: task.task_title,
+        status: mapStatus(task.task_status),
+        assigned_to: task.assigned_users.map(user => user.username).join(", "),
+        assigned_by: task.created_user.username,
+        priority: mapPriority(task.priority),
+        department: task.department.name,
       }));
-      setData(tasksWithSequentialId);
+      setData(formattedData);
       setSequentialId(response.data.length + 1); // Set next sequential ID
       setLoading(false);
     } catch (error) {
@@ -105,9 +122,6 @@ export default function TaskPage() {
     }
 };
 
-  // Function to open popover
-
-
   return (
     <div className='flex'>
       <Sidebar name="Tasks" />
@@ -120,9 +134,8 @@ export default function TaskPage() {
             </p>
           </div>
         </div>
-        <DataTable data={{}} columns={columns} />
+        <DataTable data={data} columns={columns} />
       </div>
     </div>
-      
   );
 }

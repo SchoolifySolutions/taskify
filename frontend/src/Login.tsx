@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label"
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {AlertDestructive} from "./components/Alert"
+import {AlertDestructive} from "./components/Alert";
 import picture from "./assets/login2.png";
 import logo from "./assets/logo.png"
 const SignupForm = () => {

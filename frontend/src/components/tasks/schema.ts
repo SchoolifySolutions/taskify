@@ -9,6 +9,7 @@ export const taskSchema = z.object({
   assigned_to: z.string(),
   assigned_by: z.string(),
   priority: z.string(),
+  department: z.string(),
 })
 
 export type Task = z.infer<typeof taskSchema>

@@ -31,7 +31,20 @@ class LoginView(APIView):
         if user is not None:
             login(request, user)
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'Email': username,'Id':user.id, 'Username': user.username,'token': token.key})
+
+            # Serialize department data as a list of department names
+            departments = list(user.department.all().values_list('name', flat=True))
+
+            return Response({
+                'Email': username,
+                'Id': user.id,
+                'Departments': departments,
+                'Username': user.username,
+                'Initials': user.initials,
+                'First Name': user.first_name,
+                'Last Name': user.last_name,
+                'Token': token.key
+            })
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         
