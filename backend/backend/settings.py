@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-c$7-=t56s#hoa!nkt*l@axqzic@fqlb^brr6zp_htw9czyzq9o'
+from datetime import timedelta
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -29,6 +30,7 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = "app.CustomUser"
 # Application definition
+
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -42,20 +44,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders', 
+    'rest_framework_simplejwt.token_blacklist',
+    'django.contrib.postgres',
     'django_rest_passwordreset',
     "app",
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Move this to the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -81,6 +87,37 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Add these at the top of your settings.py
+from os import getenv
+from dotenv import load_dotenv
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
+from django.conf import settings
+
+"""
+# Replace the DATABASES section of your settings.py with this
+MONGODB_URI = "mongodb+srv://schoolifysolutions:Lsaea8SsprVXoLGv@dynecluster.7twaypf.mongodb.net/?retryWrites=true&w=majority&appName=dynecluster"
+client = MongoClient(MONGODB_URI, server_api=ServerApi('1'))
+
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print("Could not connect to MongoDB:", e)
+
+
+db = client['DyneResearch']  # replace with your database name
+
+DATABASES = {
+    "default": dj_database_url.parse(
+        url="postgresql://dynedb_owner:w1bXM5dzqaIf@ep-twilight-rain-a5ferpbr.us-east-2.aws.neon.tech/dynedb?sslmode=require",
+        conn_max_age=600, conn_health_checks=True
+    )
+}
+
+"""
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -104,7 +141,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-        
     },
 ]
 
@@ -131,7 +167,65 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True  # This allows all origins
+
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'http://localhost:8000'
 ]
+
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:5173',  # Adjust according to your frontend URL
+]
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SET_PASSWORD_RETYPE': True,
+    'SET_USERNAME_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {
+        'user_create': 'app.serializers.UserCreateSerializer',
+        'user': 'app.serializers.UserCreateSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+
+    },
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    'UPDATE_LAST_LOGIN':True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+
+# REST Framework Settings
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+if not DEBUG:
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
+            "rest_framework.renderers.JSONRenderer",
+        )

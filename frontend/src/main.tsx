@@ -5,6 +5,8 @@ import Home from './home.tsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TaskPage from './tasks.tsx';
 import TaskPage2 from './yourtasks.tsx';
+import Management from './management.tsx';
+
 import './index.css';
 import { ThemeProvider } from '@/components/theme-provider';
 
@@ -17,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/home" element={<Home />} />
             <Route path="/department" element={<TaskPage />} />
             <Route path="/tasks" element={<TaskPage2 />} />
+            <Route path="/management" element={<Management />} />
             <Route path="*" element={<div>Not Found</div>} />
           </Routes>
         </BrowserRouter>

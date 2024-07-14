@@ -1,30 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from './components/sidebar';
-
-import { AlertDestructive } from "./components/Alert";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
-
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { promises as fs } from "fs"
-import path from "path"
-import { Metadata } from "next"
-import Image from "next/image"
-import { z } from "zod"
-
-import { columns } from "./components/tasks/columns"
-import { DataTable } from "./components/tasks/data-table"
-import { taskSchema, Task } from "./components/tasks/schema"
+import { DataTable } from "./components/tasks/data-table";
+import { Task } from "./components/tasks/schema";
+import { columns } from "./components/tasks/columns";
 
 const statuses = [
   { value: 0, label: "todo" },
@@ -35,7 +14,7 @@ const statuses = [
 ];
 
 const priorities = [
-  { label: "low", value:0 },
+  { label: "low", value: 0 },
   { label: "medium", value: 1 },
   { label: "high", value: 2 },
 ];
@@ -43,51 +22,38 @@ const priorities = [
 const mapStatus = (status) => {
   const statusObj = statuses.find(s => s.value === status);
   return statusObj ? statusObj.label : "Unknown";
-}
+};
 
 const mapPriority = (priority) => {
   const priorityObj = priorities.find(p => p.value === priority);
   return priorityObj ? priorityObj.label : "Unknown";
-}
+};
 
 export default function TaskPage() {
-  const [usrData, setUsrData] = useState(JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"userType":"Student"}'));
+  const [usrData, setUsrData] = useState(() => {
+    const data = localStorage.getItem("Data");
+    return data ? JSON.parse(data) : { User: "Login", Age: 0, Username: "Login", Id: -999, userType: "Student" };
+  });
   const [data, setData] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sequentialId, setSequentialId] = useState(1); // Initialize sequential ID counter
-
-  const getColorByIndex = (index: number) => {
-    const colors = [
-      'bg-[#fca5f1]', // pink
-      'bg-[#6ee7b7]', // green
-      'bg-[#7b61ff]', // purple
-    ];
-    const colors2 = [
-      'bg-[#ff7e67]', // red
-      'bg-[#62d4e3]', // blue
-      'bg-[#f9a826]', // yellow
-    ];
-  
-    if (index === 0) {
-      return colors[Math.floor(Math.random() * colors.length)];
-    } else {
-      return colors2[Math.floor(Math.random() * colors2.length)];
-    }
-  };
 
   const fetchData = async () => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      console.error("No access token found");
+    }
+    const email = usrData.Email;
+
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post("http://127.0.0.1:8000/department_tasks/", {
-        email: usrData["Email"],
-      },{
+      const response = await axios.get(`http://127.0.0.1:8000/yourtasks/`, {
+        params: { email },
         headers: {
-          Authorization: `Token ${token}`,
-        }});
-      console.log(response.data);
-      // Format data to fit the schema
-      const formattedData = response.data.map((task, index) => ({
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      const formattedData = response.data.map((task) => ({
         id: task.id.toString(),
         title: task.task_title,
         status: mapStatus(task.task_status),
@@ -96,45 +62,29 @@ export default function TaskPage() {
         priority: mapPriority(task.priority),
         department: task.department.name,
       }));
+
       setData(formattedData);
-      setSequentialId(response.data.length + 1); // Set next sequential ID
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data", error);
       setError(error);
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log(localStorage.getItem("statusChange"));
     fetchData();
-    localStorage.setItem("statusChange", JSON.stringify("false"));
-  }, [localStorage.getItem("statusChange")]);
-
-
-  const formatDepartments = (departments: any[]) => {
-    if (departments.length === 0) return "";
-    
-    const firstTwoDepartments = departments.slice(0, 2).join(' and ');
-    const moreDepartmentsCount = departments.length - 2;
-    
-    if (moreDepartmentsCount > 0) {
-        return `${firstTwoDepartments} and ${moreDepartmentsCount} more`;
-    } else {
-        return firstTwoDepartments;
-    }
-};
+  }, []);
 
   return (
     <div className='flex'>
-      <Sidebar name="Tasks" />
+      <Sidebar name="Tasks"/>
       <div className=" px-[7vw] w-[85vw] h-fit flex-1 flex-col space-y-8 p-8 absolute right-0 top-0 mt-5">
         <div className="flex items-center justify-between space-y-2">
-          <div>
+          <div className="w-full relative">
             <h2 className="text-3xl font-bold tracking-tight">Your Tasks</h2>
             <p className="text-muted-foreground mb-[2vh]">
-              Here are the tasks that are assigned to you by your team lead.
+              Here are the tasks that are assigned to you by your team leads.
             </p>
           </div>
         </div>

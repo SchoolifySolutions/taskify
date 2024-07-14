@@ -31,6 +31,7 @@ export function DataTableRowActions<TData>({
 
 
   const [task, setTask] = useState(taskSchema.parse(row.original));
+  const [usrData, setUsrData] = useState(JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Student"]}'));
   
 
   const handleLabelChange = (labelValue: string) => {
@@ -42,7 +43,7 @@ export function DataTableRowActions<TData>({
   const handleDelete = async (e: React.MouseEvent, task: any) => {
     e.preventDefault();
     try {
-      const token = JSON.parse(localStorage.getItem("token"));
+      const token = localStorage.getItem("access_token");
       console.log(token)
       if (!token) {
         throw new Error("Token not found in localStorage");
@@ -55,7 +56,7 @@ export function DataTableRowActions<TData>({
         },
         {
           headers: {
-            Authorization: `Token ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -67,24 +68,13 @@ export function DataTableRowActions<TData>({
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
+        <Button disabled={usrData['Groups'][0]=='Member'} onClick={(e)=>{handleDelete(e,task)}}
           variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-          onClick={(e)=>{handleDelete(e,task)}}
         >
           <Trash2Icon className="h-4 w-4" />
           <span className="sr-only">Open menu</span>
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px] !bg-black">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem  onClick={(e)=>{handleDelete(e,task)}}>
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      
   );
 }

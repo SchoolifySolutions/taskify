@@ -5,14 +5,46 @@ import { labels, priorities, statuses } from "./data";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Task } from "./schema";
+import axios from 'axios';
+import * as PopoverPrimitive from '@radix-ui/react-popover';
+import {useState} from 'react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { CornerDownLeft } from "lucide-react";
 
-const statusChange = (status: string) => {
-  localStorage.setItem("statusChange", JSON.stringify(status));
+const PopoverClose = PopoverPrimitive.Close;
+const usrData = JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"userType":"Student"}');
+
+const statusChange = async (e: React.MouseEvent, status: any,row:any,setStatus:any) => {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      throw new Error("Token not found in localStorage");
+    }
+    const response = await axios.post(
+      "http://127.0.0.1:8000/changetaskstatus/",
+      {
+        task_id: row.getValue('id'),
+        task_status:status.label
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );  
+
+    setStatus(status);
+    
+    
+
+  } catch (error) {
+    console.log("Error:", error);
+  }
 };
 
 export const columns: ColumnDef<Task>[] = [
@@ -74,9 +106,9 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
+      const [status, setStatus] = useState(statuses.find(
         (status) => status.value === row.getValue("status")
-      );
+      ));
 
       if (!status) {
         return null;
@@ -93,12 +125,13 @@ export const columns: ColumnDef<Task>[] = [
               )}
               <span className={`${status.class}`}>{status.label}</span>
             </PopoverTrigger>
+            {usrData["Username"]===row.getValue("assigned_by") || row.getValue("assigned_to").includes(usrData["Username"])?
             <PopoverContent className="w-fit bg-black px-[0.5vw]">
               {statuses.map((task) => (
                 <div
                   key={task.value}
-                  onClick={() => statusChange(task.label)}
-                  className={`rounded-lg px-[1vw] py-[0.5vh] hover:bg-gray-400/25 flex ${task.class}`}
+                  onClick={(e) => statusChange(e,task,row,setStatus)}
+                  className={`rounded-lg px-[1vw] py-[0.5vh] cursor-pointer hover:bg-gray-400/25 flex ${task.class}`}
                 >
                   {task.icon && (
                     <task.icon
@@ -108,7 +141,7 @@ export const columns: ColumnDef<Task>[] = [
                   {task.label}
                 </div>
               ))}
-            </PopoverContent>
+            </PopoverContent>:null}
           </div>
         </Popover>
       );

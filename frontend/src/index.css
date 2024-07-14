@@ -27,6 +27,12 @@
   }
 }
 
+
+.css-13cymwt-control{
+  background-color: black !important;
+}
+
+
 @layer utilities {
   /* TYPOGRAPHY */
   .h1-bold {
