@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from pymongo import MongoClient
+from bson.objectid import ObjectId
 from rest_framework import viewsets, permissions, status
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from rest_framework.authtoken.models import Token
@@ -13,6 +15,11 @@ from django.contrib.auth import update_session_auth_hash
 from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer
 from .models import CustomUser, Task, Department
 from django.shortcuts import get_object_or_404
+
+# MongoDB connection
+MONGODB_URI = "mongodb+srv://schoolifysolutions:Lsaea8SsprVXoLGv@dynecluster.7twaypf.mongodb.net/?retryWrites=true&w=majority&appName=dynecluster"
+client = MongoClient(MONGODB_URI)
+db = client['DyneResearch']
 
 User = get_user_model()
 

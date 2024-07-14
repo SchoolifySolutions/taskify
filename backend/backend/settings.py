@@ -90,33 +90,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Add these at the top of your settings.py
 from os import getenv
 from dotenv import load_dotenv
-from pymongo import MongoClient
-from pymongo.server_api import ServerApi
-from django.conf import settings
+import dj_database_url
+import os
 
-"""
 # Replace the DATABASES section of your settings.py with this
-MONGODB_URI = "mongodb+srv://schoolifysolutions:Lsaea8SsprVXoLGv@dynecluster.7twaypf.mongodb.net/?retryWrites=true&w=majority&appName=dynecluster"
-client = MongoClient(MONGODB_URI, server_api=ServerApi('1'))
-
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print("Could not connect to MongoDB:", e)
-
-
-db = client['DyneResearch']  # replace with your database name
-
+"""
 DATABASES = {
     "default": dj_database_url.parse(
         url="postgresql://dynedb_owner:w1bXM5dzqaIf@ep-twilight-rain-a5ferpbr.us-east-2.aws.neon.tech/dynedb?sslmode=require",
         conn_max_age=600, conn_health_checks=True
     )
 }
-
 """
-
 
 DATABASES = {
     'default': {
