@@ -26,7 +26,7 @@ from datetime import timedelta
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dyneems.onrender.com', 'localhost:5173']
 
 AUTH_USER_MODEL = "app.CustomUser"
 # Application definition

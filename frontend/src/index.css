@@ -40,7 +40,7 @@
   }
 
   .my-react-select-container .my-react-select__menu {
-    @apply bg-neutral-100 dark:bg-neutral-700 border-2 border-neutral-300 dark:border-neutral-600;
+    @apply bg-black  border-gray-500 border-[0.5px] rounded-md mt-0;
   }
 
   .my-react-select-container .my-react-select__option {
@@ -81,7 +81,7 @@
   /* Clear and dropdown indicator */
   .my-react-select-container .my-react-select__clear-indicator,
   .my-react-select-container .my-react-select__dropdown-indicator {
-    @apply text-neutral-400 dark:text-neutral-600;
+    @apply text-white;
   }
 
   .my-react-select-container .my-react-select__clear-indicator:hover,
