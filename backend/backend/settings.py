@@ -26,7 +26,7 @@ from datetime import timedelta
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dyneems.onrender.com', 'localhost:5173']
+ALLOWED_HOSTS = ['dyneems.onrender.com', 'localhost:5173', '127.0.0.1:8000', '127.0.0.1']
 
 AUTH_USER_MODEL = "app.CustomUser"
 # Application definition
@@ -94,14 +94,6 @@ import dj_database_url
 import os
 
 # Replace the DATABASES section of your settings.py with this
-"""
-DATABASES = {
-    "default": dj_database_url.parse(
-        url="postgresql://dynedb_owner:w1bXM5dzqaIf@ep-twilight-rain-a5ferpbr.us-east-2.aws.neon.tech/dynedb?sslmode=require",
-        conn_max_age=600, conn_health_checks=True
-    )
-}
-"""
 
 DATABASES = {
     'default': {
@@ -109,7 +101,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

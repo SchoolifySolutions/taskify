@@ -173,8 +173,8 @@ export default function Management() {
           <Label className="text-lg mb-1">Task Title</Label>
           <input type="text" className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh]" placeholder="Send Outreach Messages" onChange={(e) => setEmail(e.target.value)} required></input>
           <Label className="text-lg mt-[3vh] mb-1">Assigned Users</Label>
-          <Select className="my-react-select-container"
-          classNamePrefix="my-react-select"   options={deptUsers} isMulti required  placeholder={`${department===null?'Please select a department to continue':'Select all Users to be assigned'}`}/>
+          <Select className="my-react-select-container "
+          classNamePrefix="my-react-select"   options={deptUsers} isMulti isDisabled={department===null} required  placeholder={`${department===null?'Please select a department to continue':'Select all Users to be assigned'}`}/>
           <input type="password" className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] mb-[2vh]" placeholder="password" onChange={(e) => setPassword(e.target.value)} required></input>
           <button type="submit" className="bg-[#1E86FF] text-white rounded-lg py-[1vh] px-[1vw] mt-[3vh]">Submit</button>
         </form>

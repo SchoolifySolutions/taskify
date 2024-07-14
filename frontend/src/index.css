@@ -31,8 +31,12 @@
 @layer components {
   /* .my-react-select-container {
   } */
+  .my-react-select-container .my-react-select--is-disabled{
+    @apply !bg-gray-500;
+  }
+
   .my-react-select-container .my-react-select__control {
-    @apply bg-white dark:bg-black  border-[0.5px] border-gray-500 rounded-lg text-gray-500;
+    @apply bg-white dark:bg-black  border-[0.5px] border-gray-500 rounded-lg text-white  py-[0.5vh];
   }
 
   .my-react-select-container .my-react-select__control--is-focused {
@@ -44,7 +48,7 @@
   }
 
   .my-react-select-container .my-react-select__option {
-    @apply text-neutral-600 dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-800;
+    @apply text-neutral-600 dark:text-neutral-200 bg-black hover:bg-gray-800;
   }
   /* .my-react-select-container .my-react-select__option--is-focused {
     @apply bg-neutral-200 dark:bg-neutral-800;
