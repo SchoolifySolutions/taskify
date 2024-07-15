@@ -65,7 +65,7 @@ const SignupForm = () => {
             required
           />
           <h2 className="text-center text-gray-400 text-[1.5ch] mb-[6vh]">
-            Forgot your password? <a className="text-blue-400">Reset it</a>
+            Forgot your password? <a href="/forgot-password/" className="text-blue-400">Reset it</a>
           </h2>
           <Button type="submit" className="bg-white px-[15%] text-black w-fit mx-auto hover:bg-gray-100 transition-all">
             Submit
