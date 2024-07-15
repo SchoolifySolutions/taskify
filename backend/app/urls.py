@@ -35,6 +35,6 @@ urlpatterns = [
     path('assigntasks/', views.assign_tasks, name='assigntasks'),
     path('yourtasks/', views.your_tasks, name='your_tasks'),
     path('getusersbydept/', views.get_users_by_dept, name='getuserbydept'),
-    re_path(r'^.*$', TemplateView.as_view(template_name='index.html'), name='index'),
+    
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
