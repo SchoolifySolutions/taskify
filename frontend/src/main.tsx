@@ -20,6 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/department" element={<TaskPage />} />
             <Route path="/tasks" element={<TaskPage2 />} />
             <Route path="/management" element={<Management />} />
+            <Route path="/reset-password-form/:resetId" element={<Management />} />
             <Route path="*" element={<div>Not Found</div>} />
           </Routes>
         </BrowserRouter>
