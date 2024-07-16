@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import SignupForm from './Login.tsx';
-import Home from './home.tsx';
+import SignupForm from './Login';
+import Home from './home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import TaskPage from './tasks.tsx';
-import TaskPage2 from './yourtasks.tsx';
-import Management from './management.tsx';
+import TaskPage from './tasks';
+import TaskPage2 from './yourtasks';
+import Management from './management';
 
 import './index.css';
 import { ThemeProvider } from './components/theme-provider';
