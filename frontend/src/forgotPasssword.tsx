@@ -1,5 +1,5 @@
 import { Button } from "./components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Label } from "./components/ui/label";
 import  { useState } from "react";
 import axios from "axios";
 import { AlertDestructive } from "./components/Alert";
@@ -12,15 +12,15 @@ const ForgotPasssword = () => {
   const [err, setErr] = useState("");
   const [info, setInfo] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e:any) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:8000/password_reset/", {
+       await axios.post("http://127.0.0.1:8000/password_reset/", {
         email: email,
       });
       setErr("");
       setInfo(`Email was sent to ${email}, please check your email for further instructions.`);
-    } catch (error) {
+    } catch (error:any) {
         setInfo("");
       setErr(error.response.data.email ); 
     }

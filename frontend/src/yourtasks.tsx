@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from './components/sidebar';
 import { DataTable } from "./components/tasks/data-table";
@@ -19,24 +19,19 @@ const priorities = [
   { label: "high", value: 2 },
 ];
 
-const mapStatus = (status) => {
+const mapStatus = (status:any) => {
   const statusObj = statuses.find(s => s.value === status);
   return statusObj ? statusObj.label : "Unknown";
 };
 
-const mapPriority = (priority) => {
+const mapPriority = (priority:any) => {
   const priorityObj = priorities.find(p => p.value === priority);
   return priorityObj ? priorityObj.label : "Unknown";
 };
 
 export default function TaskPage() {
-  const [usrData, setUsrData] = useState(() => {
-    const data = localStorage.getItem("Data");
-    return data ? JSON.parse(data) : { User: "Login", Age: 0, Username: "Login", Id: -999, userType: "Student" };
-  });
+  const usrData=JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Student"]}');
   const [data, setData] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const fetchData = async () => {
     const token = localStorage.getItem("access_token");
@@ -53,11 +48,11 @@ export default function TaskPage() {
         }
       });
 
-      const formattedData = response.data.map((task) => ({
+      const formattedData = response.data.map((task:any) => ({
         id: task.id.toString(),
         title: task.task_title,
         status: mapStatus(task.task_status),
-        assigned_to: task.assigned_users.map(user => user.username).join(", "),
+        assigned_to: task.assigned_users.map((user:any) => user.username).join(", "),
         assigned_by: task.created_user.username,
         priority: mapPriority(task.priority),
         department: task.department.name,
@@ -66,9 +61,8 @@ export default function TaskPage() {
       setData(formattedData);
     } catch (error) {
       console.error("Error fetching data", error);
-      setError(error);
+      
     } finally {
-      setLoading(false);
     }
   };
 

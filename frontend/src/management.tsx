@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from './components/sidebar';
 import Select from 'react-select'
@@ -81,7 +81,7 @@ export default function Management() {
       
 
       // Format data to fit the schema
-      const formattedData = response.data.map((task:any, index:any) => ({
+      const formattedData = response.data.map((task:any) => ({
         id: task.id.toString(),
         title: task.task_title,
         status: mapStatus(task.task_status),
@@ -117,7 +117,7 @@ export default function Management() {
   }, [localStorage.getItem("statusChange")]);
 
 
-  const formatDepartments = (departments: any[]) => {
+  /*const formatDepartments = (departments: any[]) => {
     if (departments.length === 0) return "";
     
     const firstTwoDepartments = departments.slice(0, 2).join(' and ');
@@ -129,7 +129,7 @@ export default function Management() {
         return firstTwoDepartments;
     }
     
-};
+};*/
 const handleDepartment = (event:any) => {
   setDepartment(event);
   fetchUsers(event);
@@ -189,7 +189,7 @@ const handleSubmit = async() => {
           <input type="text" className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh]" placeholder="Send Outreach Messages" onChange={(e) => setTitle(e.target.value)} required></input>
           <Label className="text-lg mt-[3vh] mb-1">Department</Label>
           <Select className="my-react-select-container "
-          classNamePrefix="my-react-select"   options={usrData["Teamlead"].map(item => ({ label: item, value: item }))} value={department} onChange={handleDepartment}    required  placeholder={`Please select a department`}/>
+          classNamePrefix="my-react-select"   options={usrData["Teamlead"].map((item:any) => ({ label: item, value: item }))} value={department} onChange={handleDepartment}    required  placeholder={`Please select a department`}/>
           <Label className="text-lg mt-[3vh] mb-1">Users</Label>
           <Select className="my-react-select-container "
           classNamePrefix="my-react-select"   options={deptUsers} value={taskUsers} onChange={(e)=>{setTaskUsers(e)}} isMulti isDisabled={department===null} required  placeholder={`${department===null?'Please select a department to continue':'Select all Users to be assigned'}`}/>

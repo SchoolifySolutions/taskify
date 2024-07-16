@@ -1,6 +1,6 @@
 import { Button } from "./components/ui/button";
 import { Label } from "./components/ui/label";
-import React, { useState } from "react";
+import  { useState } from "react";
 import axios from "axios";
 import { useNavigate,useParams } from "react-router-dom";
 import { AlertDestructive } from "./components/Alert";
@@ -15,20 +15,20 @@ const ResetPasssword = () => {
   const  {resetId} = useParams();
   console.log(resetId)
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e:any) => {
     e.preventDefault();
     if(password === password2){
    
         try {
-        const response = await axios.post("http://127.0.0.1:8000/password_reset/confirm/", {
+        await axios.post("http://127.0.0.1:8000/password_reset/confirm/", {
             password: password,
             token: resetId,
         });
         setErr("");
         history("/");
-        } catch (error) {
+        } catch (error:any) {
             console.log(error);
-        setErr(error.response.data.password ); // handle error properly
+            setErr(error.response.data.password ); // handle error properly
         }
     }else {
         setErr("Password does not match");

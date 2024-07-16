@@ -1,10 +1,6 @@
 import { FC } from 'react';
 import { AlertCircle } from 'lucide-react';
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from '@/components/ui/alert';
+
 
 interface AlertDestructiveProps {
   description: string;

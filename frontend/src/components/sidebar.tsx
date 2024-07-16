@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import React from 'react';
-import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom';
-import { House, CircleCheckBig, Users, ClipboardList, ClipboardPen, ClipboardPenLine } from 'lucide-react';
+import { House, ClipboardList, ClipboardPen, ClipboardPenLine } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import logo from "../assets/full-logo.png";
 import logo2 from "../assets/logo.png";
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function Sidebar(props: Props) {
-    const [usrData, setUsrData] = useState(JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Member"]}'));
+    const usrData=JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Member"]}');
     const redirect = useNavigate();
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export default function Sidebar(props: Props) {
             redirect("/");
         }
     }, [usrData]);
-
+    /*
     const [popup, setPopup] = useState(false);
 
     const handleLogout = async () => {
@@ -42,7 +42,7 @@ export default function Sidebar(props: Props) {
         } catch (error) {
             console.error("Logout failed", error);
         }
-    };
+    };*/
 
     let menuItems = ["Home", "Tasks", "Department"];
     let links = ["/home", "/tasks", "/department"];

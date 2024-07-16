@@ -1,16 +1,14 @@
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-
+} from "../ui/dropdown-menu";
 import { departments } from "./data"; // Assuming departments are imported from a data file
 
 interface DataTableViewOptionsProps<TData> {
@@ -20,12 +18,12 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
-  const toggleColumnVisibility = (columnId: string) => {
+  /*const toggleColumnVisibility = (columnId: string) => {
     const column = table.getColumn(columnId);
     if (column) {
       column.toggleVisibility(!column.getIsVisible());
     }
-  };
+  };*/
 
   const resetColumnVisibility = () => {
     table.getAllColumns().forEach((column) => {
@@ -35,7 +33,7 @@ export function DataTableViewOptions<TData>({
     });
   };
 
-  const toggleDepartmentFilter = (department: string) => {
+  const toggleDepartmentFilter = (department: string | undefined) => {
     const column = table.getColumn("department");
     if (column) {
       column.setFilterValue(column.getFilterValue() === department ? undefined : department);
@@ -74,10 +72,10 @@ export function DataTableViewOptions<TData>({
         {table.getColumn("department") && (
           <>
             <DropdownMenuLabel className="text-white">Filter by Department</DropdownMenuLabel>
-            {departments.map((dept) => (
+            {(departments || [{ label: "adsfasdf", value: "adsasdf" }]).map(dept => (
               <DropdownMenuCheckboxItem
                 key={dept.value}
-                checked={table.getColumn("department").getFilterValue() === dept.value}
+                checked={(table.getColumn("department")?.getFilterValue() || "") === dept.value}
                 onCheckedChange={(value) => toggleDepartmentFilter(value ? dept.value : undefined)}
               >
                 {dept.label}

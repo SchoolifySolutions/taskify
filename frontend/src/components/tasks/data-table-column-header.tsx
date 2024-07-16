@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import React from 'react';
-import { labels, priorities, statuses } from "./data"; // Assuming these are imported from your data file
+
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
@@ -25,7 +25,6 @@ interface DataTableColumnHeaderProps<TData, TValue>
 export function DataTableColumnHeader<TData, TValue>({
   column,
   title,
-  className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
   const handleToggleSorting = (ascending: boolean) => {
     column.toggleSorting(ascending);
@@ -36,11 +35,11 @@ export function DataTableColumnHeader<TData, TValue>({
   };
 
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>;
+    return <div >{title}</div>;
   }
 
   return (
-    <div className={cn("flex items-center space-x-2", className)}>
+    <div className={cn("flex items-center space-x-2")}>
       <DropdownMenu >
         <DropdownMenuTrigger asChild className="bg-black">
           <Button

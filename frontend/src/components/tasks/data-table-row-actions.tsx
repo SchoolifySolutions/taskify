@@ -1,23 +1,9 @@
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { Row } from "@tanstack/react-table";
-import { useState } from "react";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-import { labels } from "./data";
+import { Row } from "@tanstack/react-table";
+import React from "react";
+import axios from "axios";
+import { Button } from "../ui/button";
+
 import { taskSchema } from "./schema";
 import { Trash2Icon } from "lucide-react";
 
@@ -30,16 +16,11 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
 
 
-  const [task, setTask] = useState(taskSchema.parse(row.original));
-  const [usrData, setUsrData] = useState(JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Student"]}'));
+  const task= taskSchema.parse(row.original);
+  const usrData=JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Student"]}');
   
 
-  const handleLabelChange = (labelValue: string) => {
-    setTask((prevTask) => ({
-      ...prevTask,
-      label: labelValue,
-    }));
-  };
+
   const handleDelete = async (e: React.MouseEvent, task: any) => {
     e.preventDefault();
     try {

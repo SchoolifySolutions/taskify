@@ -6,16 +6,13 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Task } from "./schema";
 import axios from 'axios';
-import * as PopoverPrimitive from '@radix-ui/react-popover';
 import React,{useState} from 'react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "../ui/popover";
-import { CornerDownLeft } from "lucide-react";
 
-const PopoverClose = PopoverPrimitive.Close;
 const usrData = JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"userType":"Student"}');
 
 interface Label {
@@ -30,7 +27,7 @@ const statusChange = async (e: React.MouseEvent, status: any,row:any,setStatus:a
     if (!token) {
       throw new Error("Token not found in localStorage");
     }
-    const response = await axios.post(
+  await axios.post(
       "http://127.0.0.1:8000/changetaskstatus/",
       {
         task_id: row.getValue('id'),
@@ -59,7 +56,7 @@ const priorityChange = async (e: React.MouseEvent, status: any,row:any,setStatus
     if (!token) {
       throw new Error("Token not found in localStorage");
     }
-    const response = await axios.post(
+    await axios.post(
       "http://127.0.0.1:8000/changetaskpriority/",
       {
         task_id: row.getValue('id'),

@@ -1,6 +1,6 @@
 import { Button } from "./components/ui/button";
 import { Label } from "./components/ui/label";
-import React, { useState } from "react";
+import  { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AlertDestructive } from "./components/Alert";
