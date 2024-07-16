@@ -15,7 +15,7 @@ const ForgotPasssword = () => {
   const handleLogin = async (e:any) => {
     e.preventDefault();
     try {
-       await axios.post("http://127.0.0.1:8000/password_reset/", {
+       await axios.post("https://schoolifys.pythonanywhere.com/password_reset/", {
         email: email,
       });
       setErr("");

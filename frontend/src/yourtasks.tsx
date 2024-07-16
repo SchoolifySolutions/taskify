@@ -41,7 +41,7 @@ export default function TaskPage() {
     const email = usrData.Email;
 
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/yourtasks/`, {
+      const response = await axios.get(`https://schoolifys.pythonanywhere.com/yourtasks/`, {
         params: { email },
         headers: {
           Authorization: `Bearer ${token}`,
