@@ -31,7 +31,7 @@ export function DataTableRowActions<TData>({
       }
       console.log(task.id)
       const response = await axios.post(
-        "http://127.0.0.1:8000/deletetask/",
+        "https://schoolifys.pythonanywhere.com/deletetask/",
         {
           task_id: task.id,
         },

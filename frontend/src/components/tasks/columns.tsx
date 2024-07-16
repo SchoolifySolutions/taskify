@@ -28,7 +28,7 @@ const statusChange = async (e: React.MouseEvent, status: any,row:any,setStatus:a
       throw new Error("Token not found in localStorage");
     }
   await axios.post(
-      "http://127.0.0.1:8000/changetaskstatus/",
+      "https://schoolifys.pythonanywhere.com/changetaskstatus/",
       {
         task_id: row.getValue('id'),
         task_status:status.label
@@ -57,7 +57,7 @@ const priorityChange = async (e: React.MouseEvent, status: any,row:any,setStatus
       throw new Error("Token not found in localStorage");
     }
     await axios.post(
-      "http://127.0.0.1:8000/changetaskpriority/",
+      "https://schoolifys.pythonanywhere.com/changetaskpriority/",
       {
         task_id: row.getValue('id'),
         task_priority:status.label
