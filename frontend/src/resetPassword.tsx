@@ -1,5 +1,5 @@
 import { Button } from "./components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Label } from "./components/ui/label";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate,useParams } from "react-router-dom";

@@ -1,6 +1,6 @@
 import  Sidebar  from "./components/sidebar";
-
-import { Label } from "@/components/ui/label"
+import React from 'react';
+import { Label } from "./components/ui/label"
 
 const Home = () => {
     const usrData=JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Student"]}');
@@ -35,7 +35,7 @@ const Home = () => {
                         <div>
     <Label>Departments:</Label>
     <p className="text-muted-foreground mb-[2vh]">
-        {usrData["Departments"].map((task, index) => (
+        {usrData["Departments"].map((task:any, index:number) => (
             <span key={index}>{task}{index < usrData["Departments"].length - 1 ? ', ' : ''}</span>
         ))}
     </p>

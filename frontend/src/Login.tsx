@@ -1,5 +1,5 @@
 import { Button } from "./components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Label } from "./components/ui/label";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ const SignupForm = () => {
   const [err, setErr] = useState("");
   const history = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e:any) => {
     e.preventDefault();
     try {
       const response = await axios.post("http://127.0.0.1:8000/login/", {
@@ -31,7 +31,7 @@ const SignupForm = () => {
       localStorage.setItem("access_token", token); // store as 'access_token'
       localStorage.setItem("Data", JSON.stringify(response.data));
       history("/home");
-    } catch (error) {
+    } catch (error:any) {
       setErr(error.response?.data?.detail || "Login failed, please try again."); // handle error properly
     }
   };

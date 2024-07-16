@@ -111,7 +111,7 @@ from django.core.mail import send_mail, EmailMessage
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
     # the below like concatinates your websites reset password url and the reset email token which will be required at a later stage
-    email_plaintext_message = "Open the link to reset your password" + " " + "{}{} \n \nDidn't reset your password?, Then please ignore this email. \n\n Dyne Management Team".format(instance.request.build_absolute_uri("http://localhost:5173/reset-password-form/"), reset_password_token.key)
+    email_plaintext_message = "Open the link to reset your password for Dyne EMS" + " " + "{}{} \n \nDidn't reset your password?, Please safely ignore this email. \n\nDyne Management Team".format(instance.request.build_absolute_uri("http://localhost:5173/reset-password-form/"), reset_password_token.key)
     
     """
         this below line is the django default sending email function, 

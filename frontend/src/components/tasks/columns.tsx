@@ -1,22 +1,27 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "../ui/badge";
+import { Checkbox } from "../ui/checkbox";
 import { labels, priorities, statuses } from "./data";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Task } from "./schema";
 import axios from 'axios';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
-import {useState} from 'react';
+import React,{useState} from 'react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "../ui/popover";
 import { CornerDownLeft } from "lucide-react";
 
 const PopoverClose = PopoverPrimitive.Close;
 const usrData = JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"userType":"Student"}');
+
+interface Label {
+  value: string;
+  label: string;
+}
 
 const statusChange = async (e: React.MouseEvent, status: any,row:any,setStatus:any) => {
   e.preventDefault();
@@ -116,9 +121,8 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
-    cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
-
+    cell: ({ row }:any) => {
+      const label = labels.find((label:Label) => label.value === row.original.value);
       return (
         <div className="flex space-x-2">
           {label && <Badge variant="outline">{label.label}</Badge>}
@@ -135,7 +139,7 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
-    cell: ({ row }) => {
+    cell: ({ row }:any) => {
       const [status, setStatus] = useState(statuses.find(
         (status) => status.value === row.getValue("status")
       ));
@@ -186,7 +190,7 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Assigned To" />
     ),
-    cell: ({ row }) => (
+    cell: ({ row }:any) => (
       <div>
         {`${row.getValue("assigned_to").split(", ").slice(0, 2).join(", ")}${row.getValue("assigned_to").split(", ").length > 2 ? ` + ${row.getValue("assigned_to").split(", ").length - 2} more` : ''}`}
       </div>

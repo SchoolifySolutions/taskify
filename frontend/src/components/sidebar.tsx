@@ -3,7 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { House, CircleCheckBig, Users, ClipboardList, ClipboardPen, ClipboardPenLine } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import logo from "../assets/full-logo.png";
 import logo2 from "../assets/logo.png";
 

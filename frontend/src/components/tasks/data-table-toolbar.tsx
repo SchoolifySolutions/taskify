@@ -1,9 +1,8 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import { DataTableViewOptions } from "./data-table-view-options";
 
 import { priorities, statuses, departments } from "./data"; // Import departments from your data file

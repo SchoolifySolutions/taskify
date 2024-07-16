@@ -5,17 +5,22 @@ import {
   EyeNoneIcon,
 } from "@radix-ui/react-icons";
 import { Column } from "@tanstack/react-table";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from "../../lib/utils";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../ui/dropdown-menu";
+import React from 'react';
 import { labels, priorities, statuses } from "./data"; // Assuming these are imported from your data file
-import { DataTableColumnHeaderProps } from "./types"; // Adjust path as per your project structure
+interface DataTableColumnHeaderProps<TData, TValue>
+  extends React.HTMLAttributes<HTMLDivElement> {
+  column: Column<TData, TValue>
+  title: string
+}
 
 export function DataTableColumnHeader<TData, TValue>({
   column,
@@ -36,7 +41,7 @@ export function DataTableColumnHeader<TData, TValue>({
 
   return (
     <div className={cn("flex items-center space-x-2", className)}>
-      <DropdownMenu className="bg-black">
+      <DropdownMenu >
         <DropdownMenuTrigger asChild className="bg-black">
           <Button
             variant="ghost"

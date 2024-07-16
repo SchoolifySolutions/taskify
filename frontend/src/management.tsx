@@ -1,33 +1,18 @@
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from './components/sidebar';
 import Select from 'react-select'
 
-import { AlertDestructive } from "./components/Alert";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
 
-import {Button} from "@/components/ui/button";
+import {Button} from "./components/ui/button";
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { promises as fs } from "fs"
-import path from "path"
-import { Metadata } from "next"
-import Image from "next/image"
-import { z } from "zod"
+
+import { Label } from "./components/ui/label"
+
 
 import { columns } from "./components/tasks/columns"
 import { DataTable } from "./components/tasks/data-table"
-import { taskSchema, Task } from "./components/tasks/schema"
+import { Task } from "./components/tasks/schema"
 import { useNavigate } from 'react-router-dom';
 
 
@@ -45,54 +30,35 @@ const priorities = [
   { label: "high", value: 2 },
 ];
 
-const mapStatus = (status) => {
+const mapStatus = (status:any) => {
   const statusObj = statuses.find(s => s.value === status);
   return statusObj ? statusObj.label : "Unknown";
 }
 
-const mapPriority = (priority) => {
+const mapPriority = (priority:any) => {
   const priorityObj = priorities.find(p => p.value === priority);
   return priorityObj ? priorityObj.label : "Unknown";
 }
 
 export default function Management() {
-  const [usrData, setUsrData] = useState(JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Student"]}'));
+  const usrData=JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"Groups":["Student"]}');
   const [data, setData] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [sequentialId, setSequentialId] = useState(1); 
+
   const [form, setForm] = useState(false); 
   const [deptUsers, setDeptUsers] = useState([]); 
   const history = useNavigate();
 
-  const [taskUsers, setTaskUsers] = useState(); 
-  const [department, setDepartment] = useState(null); 
-  const [title, setTitle] = useState(null); 
-  const [description, setDescription] = useState(null); 
-  const [dueDate, setDueDate] = useState(null); 
+  const [taskUsers, setTaskUsers] = useState<any>(); 
+  const [department, setDepartment] = useState<any>(); 
+  const [title, setTitle] = useState(""); 
+  const [description, setDescription] = useState(""); 
+  const [dueDate, setDueDate] = useState(""); 
   const [priority, setPriority] = useState(0);  
   if (usrData["Groups"][0] === "Member" || usrData["Groups"][0] === "") {
     history("/");
   }
 
-  const getColorByIndex = (index: number) => {
-    const colors = [
-      'bg-[#fca5f1]', // pink
-      'bg-[#6ee7b7]', // green
-      'bg-[#7b61ff]', // purple
-    ];
-    const colors2 = [
-      'bg-[#ff7e67]', // red
-      'bg-[#62d4e3]', // blue
-      'bg-[#f9a826]', // yellow
-    ];
-  
-    if (index === 0) {
-      return colors[Math.floor(Math.random() * colors.length)];
-    } else {
-      return colors2[Math.floor(Math.random() * colors2.length)];
-    }
-  };
+
 
   const fetchData = async () => {
 
@@ -115,26 +81,25 @@ export default function Management() {
       
 
       // Format data to fit the schema
-      const formattedData = response.data.map((task, index) => ({
+      const formattedData = response.data.map((task:any, index:any) => ({
         id: task.id.toString(),
         title: task.task_title,
         status: mapStatus(task.task_status),
-        assigned_to: task.assigned_users.map(user => user.username).join(", "),
+        assigned_to: task.assigned_users.map((user:any) => user.username).join(", "),
         assigned_by: task.created_user.username,
         priority: mapPriority(task.priority),
         department: task.department.name,
       }));
       setData(formattedData);
-      setSequentialId(response.data.length + 1); // Set next sequential ID
-      setLoading(false);
 
-    } catch (error) {
+
+    } catch (error:any) {
         console.error("Error fetching data", error);
-        setError(error);
+
     }
   };
 
-  const fetchUsers = async(event) => {
+  const fetchUsers = async(event:any) => {
     const token = localStorage.getItem("access_token");
     console.log(department);
     const response2 = await axios.post("http://127.0.0.1:8000/getusersbydept/", {
@@ -165,7 +130,7 @@ export default function Management() {
     }
     
 };
-const handleDepartment = (event) => {
+const handleDepartment = (event:any) => {
   setDepartment(event);
   fetchUsers(event);
   setTaskUsers(null);
@@ -174,7 +139,7 @@ const handleDepartment = (event) => {
 const handleSubmit = async() => {
   try{
   const token = localStorage.getItem("access_token");
-    const response2 = await axios.post("http://127.0.0.1:8000/newtask/", {
+     await axios.post("http://127.0.0.1:8000/newtask/", {
       department:department.label,
       task_title:title,
       task_description:description,
@@ -189,9 +154,9 @@ const handleSubmit = async() => {
     }});
     setForm(false);
     setTitle("");
-    setDepartment();
-    setDescription();
-    setDueDate();
+    setDepartment(null);
+    setDescription("");
+    setDueDate("");
     setPriority(0);
   } catch(error){
     console.log(error)
@@ -230,11 +195,11 @@ const handleSubmit = async() => {
           classNamePrefix="my-react-select"   options={deptUsers} value={taskUsers} onChange={(e)=>{setTaskUsers(e)}} isMulti isDisabled={department===null} required  placeholder={`${department===null?'Please select a department to continue':'Select all Users to be assigned'}`}/>
           
           <Label className="text-lg mt-[3vh] mb-1">Description</Label>
-          <textarea type="text" className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] mb-[2vh] resize-none" placeholder="Send messages to outside organizations for outreach" onChange={(e) => setDescription(e.target.value)} required  rows={2}></textarea>
+          <textarea className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] mb-[2vh] resize-none" placeholder="Send messages to outside organizations for outreach" onChange={(e) => setDescription(e.target.value)} required  rows={2}></textarea>
           <Label className="text-lg mt-[3vh] mb-1">Due Date and Priority</Label>
           <div className='flex'>
           <input type="date"  className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-1/2" placeholder="Send Outreach Messages" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required></input>
-          <select required className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-1/2" value={priority} onChange={(e) => setPriority(e.target.value)}>
+          <select required className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-1/2" value={priority} onChange={(e:any) => setPriority(e.target.value)}>
             <option value="0" className="text-[red]" >↓ Low</option>
             <option value="1">→ Medium</option>
             <option value="2">↑ High</option>
