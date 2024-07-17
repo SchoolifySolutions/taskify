@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { House, ClipboardList, ClipboardPen, ClipboardPenLine } from 'lucide-react';
+import { House, ClipboardList, ClipboardPen, ClipboardPenLine, Users } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import logo from "../assets/full-logo.png";
 import logo2 from "../assets/logo.png";
@@ -53,13 +53,14 @@ export default function Sidebar(props: Props) {
     ];
 
     if (usrData["Groups"][0] !== "Member") {
-        menuItems = ["Home", "Tasks", "Management", "Department"];
-        links = ["/home", "/tasks", "/management", "/department"];
+        menuItems = ["Home", "Tasks", "Management", "Department", "Team"];
+        links = ["/home", "/tasks", "/management", "/department", "/team"];
         menuIcons = [
             <House key="House" />,
             <ClipboardList key="ClipboardList" />,
             <ClipboardPen key="ClipboardPen" />,
             <ClipboardPenLine key="ClipboardPenLine" />,
+            <Users />
         ];
     }
 

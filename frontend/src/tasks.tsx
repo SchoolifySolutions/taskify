@@ -75,6 +75,7 @@ export default function TaskPage() {
         status: mapStatus(task.task_status),
         assigned_to: task.assigned_users.map((user:any) => user.username).join(", "),
         assigned_by: task.created_user.username,
+        task_description: task.task_description,
         priority: mapPriority(task.priority),
         department: task.department.name,
       }));

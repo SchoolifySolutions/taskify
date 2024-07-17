@@ -87,10 +87,12 @@ export default function Management() {
         status: mapStatus(task.task_status),
         assigned_to: task.assigned_users.map((user:any) => user.username).join(", "),
         assigned_by: task.created_user.username,
+        task_description: task.task_description,
         priority: mapPriority(task.priority),
         department: task.department.name,
       }));
       setData(formattedData);
+      console.log(formattedData);
 
 
     } catch (error:any) {
@@ -193,7 +195,6 @@ const handleSubmit = async() => {
           <Label className="text-lg mt-[3vh] mb-1">Users</Label>
           <Select className="my-react-select-container "
           classNamePrefix="my-react-select"   options={deptUsers} value={taskUsers} onChange={(e)=>{setTaskUsers(e)}} isMulti isDisabled={department===null} required  placeholder={`${department===null?'Please select a department to continue':'Select all Users to be assigned'}`}/>
-          
           <Label className="text-lg mt-[3vh] mb-1">Description</Label>
           <textarea className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] mb-[2vh] resize-none" placeholder="Send messages to outside organizations for outreach" onChange={(e) => setDescription(e.target.value)} required  rows={2}></textarea>
           <Label className="text-lg mt-[3vh] mb-1">Due Date and Priority</Label>
