@@ -103,6 +103,20 @@ def get_dept_by_id(request):
         return Response({'error': 'Department does not exist.'}, status=404)
     except Exception as e:
         return Response({'error': str(e)}, status=500)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_task_by_id(request):
+    try:
+        print(request.data)
+        task_id = request.data.get('task_id')
+        task = Task.objects.get(id=task_id)
+        serializer = TaskSerializer(task)
+        return Response(serializer.data)
+    except Department.DoesNotExist:
+        return Response({'error': 'Department does not exist.'}, status=404)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -191,7 +205,7 @@ def edit_task(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def your_tasks(request):
-    email = request.GET.get('email')  # Get email from query parameters
+    email = request.GET.get('email')
     if not email:
         return Response({'error': 'Email parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
 

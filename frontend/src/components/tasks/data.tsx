@@ -33,6 +33,7 @@ export const statuses = [
     label: "Stuck",
     icon: CrossCircledIcon,
     department: "Development",
+    bg:"bg-[red]",
     class:"text-[red]"
   },
   {
@@ -40,28 +41,32 @@ export const statuses = [
     label: "Todo",
     icon: CircleIcon,
     department: "Development",
-    class:""
+    class:"",
+    bg:"bg-white"
   },
   {
     value: "in progress",
     label: "In Progress",
     icon: StopwatchIcon,
     department: "Development",
-    class:"text-[orange]"
+    class:"text-[orange]",
+    bg:"bg-[orange]"
   },
   {
     value: "done",
     label: "Done",
     icon: CheckCircledIcon,
     department: "Development",
-    class:"text-[limegreen]"
+    class:"text-[limegreen]",
+    bg:"bg-[limegreen]"
   },
   {
     value: "canceled",
     label: "Canceled",
     icon: CrossCircledIcon,
     department: "Development",
-    class:"text-[gray]"
+    class:"text-[gray]",
+    bg:"bg-[gray]"
   },
 ];
 
@@ -70,21 +75,21 @@ export const priorities = [
     label: "Low",
     value: "low",
     icon: ArrowDownIcon,
-    department: "Development",
+    bg: "bg-[limegreen]",
     class:"text-[limegreen]"
   },
   {
     label: "Medium",
     value: "medium",
     icon: ArrowRightIcon,
-    department: "Development",
+    bg: "bg-[orange]",
     class:"text-[orange]"
   },
   {
     label: "High",
     value: "high",
     icon: ArrowUpIcon,
-    department: "Development",
+    bg: "bg-[red]",
     class:"text-[red]"
   },
 ];

@@ -61,7 +61,7 @@ export default function TaskPage() {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const response = await axios.post("https://schoolifys.pythonanywhere.com/department_tasks/", {
+      const response = await axios.post(`${import.meta.env.VITE_URL}department_tasks/`, {
         email: usrData["Email"],
       },{
         headers: {

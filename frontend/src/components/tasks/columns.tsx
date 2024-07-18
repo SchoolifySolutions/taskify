@@ -14,6 +14,8 @@ import {
 } from "../ui/popover";
 
 const usrData = JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"userType":"Student"}');
+console.log(usrData);
+
 
 interface Label {
   value: string;
@@ -28,7 +30,7 @@ const statusChange = async (e: React.MouseEvent, status: any,row:any,setStatus:a
       throw new Error("Token not found in localStorage");
     }
   await axios.post(
-      "https://schoolifys.pythonanywhere.com/changetaskstatus/",
+      `${import.meta.env.VITE_URL}changetaskstatus/`,
       {
         task_id: row.getValue('id'),
         task_status:status.label
@@ -57,7 +59,7 @@ const priorityChange = async (e: React.MouseEvent, status: any,row:any,setStatus
       throw new Error("Token not found in localStorage");
     }
     await axios.post(
-      "https://schoolifys.pythonanywhere.com/changetaskpriority/",
+      `${import.meta.env.VITE_URL}changetaskpriority/`,
       {
         task_id: row.getValue('id'),
         task_priority:status.label
@@ -224,7 +226,7 @@ export const columns: ColumnDef<Task>[] = [
           )}
           <span className={`${priority.class}`}>{priority.label}</span>
         </PopoverTrigger>
-        {usrData["Groups"][0]!== "Member"?
+        {usrData["Groups"][0]=== "Management"&&usrData["Username"]===row.getValue("assigned_by")||usrData["Groups"][0]=== "Superuser"||usrData["Groups"][0]=== "Executive"||usrData["Groups"][0]=== "Management"&&usrData["Teamlead"].includes(row.getValue("department"))?
         <PopoverContent className="w-fit bg-black px-[0.5vw]">
               {priorities.map((task) => (
                 <div

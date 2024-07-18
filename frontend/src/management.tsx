@@ -71,7 +71,7 @@ export default function Management() {
 
     try {
       const token = localStorage.getItem("access_token");
-      const response = await axios.post("https://schoolifys.pythonanywhere.com/assigntasks/", {
+      const response = await axios.post(`${import.meta.env.VITE_URL}assigntasks/`, {
         email: usrData["Email"],
       },{
         headers: {
@@ -104,7 +104,7 @@ export default function Management() {
   const fetchUsers = async(event:any) => {
     const token = localStorage.getItem("access_token");
     console.log(department);
-    const response2 = await axios.post("https://schoolifys.pythonanywhere.com/getusersbydept/", {
+    const response2 = await axios.post(`${import.meta.env.VITE_URL}getusersbydept/`, {
       department:event.label,
     },{
       headers: {
@@ -141,7 +141,7 @@ const handleDepartment = (event:any) => {
 const handleSubmit = async() => {
   try{
   const token = localStorage.getItem("access_token");
-     await axios.post("https://schoolifys.pythonanywhere.com/newtask/", {
+     await axios.post(`${import.meta.env.VITE_URL}newtask/`, {
       department:department.label,
       task_title:title,
       task_description:description,

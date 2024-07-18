@@ -16,7 +16,7 @@ const SignupForm = () => {
   const handleLogin = async (e:any) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://schoolifys.pythonanywhere.com/login/", {
+      const response = await axios.post(`${import.meta.env.VITE_URL}login/`, {
         username: email,
         password: password,
       });

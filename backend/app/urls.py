@@ -32,6 +32,7 @@ urlpatterns = [
     path('getuserbuid/', views.get_user_by_id, name='getuserbyid'),
     path('changetaskstatus/', views.change_task_status, name='changetaskstatus'),
     path('changetaskpriority/', views.change_task_priority, name='changetaskpriority'),
+    path('gettaskbyid/', views.get_task_by_id, name='gettaskbyid'),
     path('deletetask/', views.delete_task, name='deletetask'),
     path('assigntasks/', views.assign_tasks, name='assigntasks'),
     path('yourtasks/', views.your_tasks, name='your_tasks'),

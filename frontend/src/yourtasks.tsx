@@ -41,7 +41,7 @@ export default function TaskPage() {
     const email = usrData.Email;
 
     try {
-      const response = await axios.get(`https://schoolifys.pythonanywhere.com/yourtasks/`, {
+      const response = await axios.get(`${import.meta.env.VITE_URL}yourtasks/`, {
         params: { email },
         headers: {
           Authorization: `Bearer ${token}`,

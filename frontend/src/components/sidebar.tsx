@@ -44,12 +44,13 @@ export default function Sidebar(props: Props) {
         }
     };*/
 
-    let menuItems = ["Home", "Tasks", "Department"];
-    let links = ["/home", "/tasks", "/department"];
+    let menuItems = ["Home", "Tasks", "Department", "Team"];
+    let links = ["/home", "/tasks", "/department", "/team"];
     let menuIcons = [
         <House key="House" />,
         <ClipboardList key="ClipboardList" />,
         <ClipboardPenLine key="ClipboardPenLine" />,
+        <Users />
     ];
 
     if (usrData["Groups"][0] !== "Member") {

@@ -20,7 +20,7 @@ const ResetPasssword = () => {
     if(password === password2){
    
         try {
-        await axios.post("https://schoolifys.pythonanywhere.com/password_reset/confirm/", {
+        await axios.post(`${import.meta.env.VITE_URL}password_reset/confirm/`, {
             password: password,
             token: resetId,
         });
