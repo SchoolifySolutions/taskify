@@ -305,3 +305,34 @@ def change_task_priority(request):
         return Response('Success', status=status.HTTP_200_OK)
     
     return Response({'error': 'Invalid task status'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_team_by_dept(request):
+    try:
+        departments = request.data.get('departments')
+        if not departments:
+            return Response({'error': 'No departments provided.'}, status=400)
+
+        final_dict = {}
+        for dept_name in departments:
+            try:
+                dept = Department.objects.get(name=dept_name)
+                team_leads = CustomUser.objects.filter(display_team_lead=dept)
+                members = CustomUser.objects.filter(groups=1, department=dept)
+
+                final_dict[dept.name] = {
+                    "team_lead": list(team_leads.values()),
+                    "members": list(members.values())
+                }
+            except Department.DoesNotExist:
+                return Response({'error': f'Department {dept_name} does not exist.'}, status=404)
+
+        return Response({'departments': final_dict})
+    except Exception as e:
+        print(e)
+        return Response({'error': str(e)}, status=500)
+# 1 Is Member
+# 2 Is Executive
+# 3 Is Management
+# 4 Is Superuser

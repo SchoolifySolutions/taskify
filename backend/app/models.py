@@ -47,6 +47,7 @@ class CustomUser(AbstractUser):
     initials = models.CharField(max_length=3, default='')
     department = models.ManyToManyField(Department, blank=True)
     team_lead = models.ManyToManyField(Department, blank=True, related_name='team_leads')
+    display_team_lead = models.ManyToManyField(Department, blank=True, related_name='display_team_leads')
     contract = models.FileField(upload_to='contracts/', blank=True, null=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

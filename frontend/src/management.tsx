@@ -54,7 +54,7 @@ export default function Management() {
   const [description, setDescription] = useState(""); 
   const [dueDate, setDueDate] = useState(""); 
   const [priority, setPriority] = useState(0);  
-  if (usrData["Groups"][0] === "Member" || usrData["Groups"][0] === "") {
+  if (usrData["Groups"][0] === "Member" || usrData["Groups"][0] === "" ||usrData["Groups"][0]==="Student" ) {
     history("/");
   }
 

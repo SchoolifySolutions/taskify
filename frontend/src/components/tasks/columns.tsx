@@ -14,7 +14,7 @@ import {
 } from "../ui/popover";
 
 const usrData = JSON.parse(localStorage.getItem("Data") || '{"User":"Login","Age":0,"Username":"Login","Id":-999,"userType":"Student"}');
-console.log(usrData);
+
 
 
 interface Label {

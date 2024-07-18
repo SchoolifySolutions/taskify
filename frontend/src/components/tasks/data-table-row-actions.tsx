@@ -5,8 +5,7 @@ import { Button } from "../ui/button";
 import { Trash2Icon, MoreHorizontalIcon } from "lucide-react"; // Import the three dots icon
 import { taskSchema } from "./schema";
 import { statuses, priorities } from "./data";
-import { Badge } from "../ui/badge";
-import { badgeVariants } from "../ui/badge"
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,13 +16,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "../ui/alert-dialog"
 
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card"
+} from "../ui/hover-card"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -59,7 +58,7 @@ export function DataTableRowActions<TData>({
   const status = statuses.find(
     (status) => status.value === task.status
   );
-  console.log(priority.bg)
+
 
   const handleDelete = async (e: React.MouseEvent, task: any) => {
     e.preventDefault();
@@ -160,8 +159,8 @@ export function DataTableRowActions<TData>({
               close
             </Button>
             <div className="w-[60vw] mx-auto mt-[15vh] my-auto">
-              <h1 className="text-center font-bold text-4xl mb-16">{task.title}</h1>
-              <div className="flex gap-4 px-[10%] w-fit mx-auto mb-[3vh]" >
+              <h1 className="text-left font-bold text-4xl mb-16">{task.title}</h1>
+              <div className="flex gap-4  mb-[3vh]" >
               <HoverCard>
               <HoverCardTrigger>
                 <Button variant="outline">
@@ -223,12 +222,13 @@ export function DataTableRowActions<TData>({
 
 
           </div>
-          <h2 className="text-center text-gray-300 text-lg mb-3 padding-5">
-            {tasks.task_description}
-          </h2>
+          
 
-          <h2 className="text-center text-gray-600 text-lg mb-5 padding-5">
+          <h2 className="text-left text-gray-400 text-lg mb-5 padding-5 max-w-[60vw] mx-auto">
             Assigned To: {task.assigned_to}
+          </h2>
+          <h2 className="text-left text-gray-300 text-lg   max-w-[60vw] mx-auto padding-5">
+            {tasks.task_description}
           </h2>
         </div>
         </div>
