@@ -8,7 +8,7 @@ import TaskPage2 from './yourtasks';
 import Management from './management';
 import ForgotPasssword from './forgotPasssword';
 import ResetPassword from './resetPassword';
-import Team from "./team"
+
 
 import './index.css';
 import { ThemeProvider } from './components/theme-provider';
