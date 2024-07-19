@@ -23,7 +23,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/department" element={<TaskPage />} />
             <Route path="/tasks" element={<TaskPage2 />} />
             <Route path="/management" element={<Management />} />
-            <Route path="/team" element={<Team />} />
             <Route path="/forgot-password/" element={<ForgotPasssword />} />
             <Route path="/reset-password-form/:resetId" element={<ResetPassword />} />
             <Route path="*" element={<div>Not Found</div>} />

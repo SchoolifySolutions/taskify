@@ -44,24 +44,22 @@ export default function Sidebar(props: Props) {
         }
     };*/
 
-    let menuItems = ["Home", "Tasks", "Department", "Team"];
-    let links = ["/home", "/tasks", "/department", "/team"];
+    let menuItems = ["Home", "Tasks", "Department"];
+    let links = ["/home", "/tasks", "/department"];
     let menuIcons = [
         <House key="House" />,
         <ClipboardList key="ClipboardList" />,
         <ClipboardPenLine key="ClipboardPenLine" />,
-        <Users />
     ];
 
     if (usrData["Groups"][0] !== "Member") {
-        menuItems = ["Home", "Tasks", "Management", "Department", "Team"];
-        links = ["/home", "/tasks", "/management", "/department", "/team"];
+        menuItems = ["Home", "Tasks", "Management", "Department"];
+        links = ["/home", "/tasks", "/management", "/department"];
         menuIcons = [
             <House key="House" />,
             <ClipboardList key="ClipboardList" />,
             <ClipboardPen key="ClipboardPen" />,
             <ClipboardPenLine key="ClipboardPenLine" />,
-            <Users />
         ];
     }
 
