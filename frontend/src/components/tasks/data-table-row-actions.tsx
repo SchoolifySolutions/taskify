@@ -53,11 +53,11 @@ export function DataTableRowActions<TData>({
   };
   const priority = priorities.find(
     (priority) => priority.value === task.priority
-  );
-
+  ) || { label: "No Priority", class: "", icon: () => null };
+  
   const status = statuses.find(
     (status) => status.value === task.status
-  );
+  ) || { label: "No Status", class: "", icon: () => null };
 
 
   const handleDelete = async (e: React.MouseEvent, task: any) => {
