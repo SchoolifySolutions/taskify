@@ -319,6 +319,7 @@ def get_team_by_dept(request):
             try:
                 dept = Department.objects.get(name=dept_name)
                 team_leads = CustomUser.objects.filter(display_team_lead=dept)
+                
                 members = CustomUser.objects.filter(groups=1, department=dept)
 
                 final_dict[dept.name] = {
