@@ -38,6 +38,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+#------------------- User Model --------------------
 class CustomUser(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     
@@ -73,7 +74,9 @@ class CustomUser(AbstractUser):
         verbose_name=_('user permissions'),
         help_text=_('Specific permissions for this user.'),
     )    
-    
+
+
+#------------------- Task Model --------------------
 class Task(models.Model):
     assigned_users = models.ManyToManyField(
         CustomUser,

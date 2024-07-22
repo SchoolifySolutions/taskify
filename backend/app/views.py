@@ -7,13 +7,14 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from rest_framework import viewsets, permissions, status
 from django.contrib.auth import get_user_model, authenticate, login, logout
+import openpyxl
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import update_session_auth_hash
 from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer
-from .models import CustomUser, Task, Department
+from .models import CustomUser, Task, Department, Group
 from django.shortcuts import get_object_or_404
 
 User = get_user_model()
@@ -289,7 +290,6 @@ def new_tasks(request):
         print(e)
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def change_task_priority(request):
@@ -319,8 +319,11 @@ def get_team_by_dept(request):
             try:
                 dept = Department.objects.get(name=dept_name)
                 team_leads = CustomUser.objects.filter(display_team_lead=dept)
-                
-                members = CustomUser.objects.filter(groups=1, department=dept)
+                if (dept_name != "Dyne Management"):
+                    members = CustomUser.objects.filter(groups=1, department=dept)
+                else:
+                    members = CustomUser.objects.filter( department=dept)
+
 
                 final_dict[dept.name] = {
                     "team_lead": list(team_leads.values()),
@@ -333,7 +336,73 @@ def get_team_by_dept(request):
     except Exception as e:
         print(e)
         return Response({'error': str(e)}, status=500)
+    
 # 1 Is Member
 # 2 Is Executive
 # 3 Is Management
 # 4 Is Superuser
+import os
+from django.conf import settings
+
+@api_view(['GET'])
+def create_member(request):
+    User = get_user_model()
+
+    # Get the absolute path to the Excel file
+    excel_file = os.path.join(settings.BASE_DIR, 'app', 'acc.xlsx')
+
+    # Load the workbook
+    workbook = openpyxl.load_workbook(excel_file)
+
+    # Assuming you want to work with the active sheet
+    worksheet = workbook.active
+
+    users = []
+
+    for row in worksheet.iter_rows(min_row=0, max_row=worksheet.max_row, min_col=1, max_col=worksheet.max_column):
+        FN = row[0].value
+        LN = row[1].value
+        IN = row[2].value
+        Dept = row[3].value
+        Email = row[4].value
+        Groups = row[5].value
+        username = (FN + LN).lower()
+
+        print(f"Creating user: {username}")
+        print(f"First Name: {FN}")
+        print(f"Last Name: {LN}")
+        print(f"Initials: {IN}")
+        print(f"Department: {Dept}")
+        print(f"Email: {Email}")
+        print(f"Groups: {Groups}")
+        
+        # Fetch Department instance or create if it doesn't exist
+        department_instance, _ = Department.objects.get_or_create(name=Dept)
+
+        # Create CustomUser instance
+        custom_user = User(
+            username=username,
+            email=Email,
+            first_name=FN,
+            last_name=LN,
+            initials=IN,
+        )
+
+        # Set groups
+        if Groups:
+            group_names = Groups.split(',')  # Assuming Groups are comma-separated
+            groups = Group.objects.filter(name__in=group_names)
+            print(f"Fetched groups: {groups}")
+            custom_user.groups.set(groups)  # No need to convert to list
+
+        # Set department
+        custom_user.department.add(department_instance)
+        print(f"Created custom_user: {custom_user}")
+
+        # Append the created CustomUser object to the list
+        users.append(custom_user)
+
+    # Bulk create all users
+    User.objects.bulk_create(users)
+
+    return Response({'message': 'Users created successfully'}, status=200)
