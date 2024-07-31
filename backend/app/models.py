@@ -106,6 +106,29 @@ class Task(models.Model):
         verbose_name_plural = _('tasks')
 
 
+from datetime import datetime
+#------------------- ProgReport Model --------------------
+class ProgReport(models.Model):
+    user = models.ForeignKey(
+        CustomUser,
+        related_name='proguser',
+        verbose_name=_('proguser'),
+        on_delete=models.CASCADE,
+    )
+    task = models.ForeignKey(
+        Task,
+        related_name='task',
+        verbose_name=_('task'),
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    report_title = models.CharField(max_length=500)
+    report_description = models.TextField()
+    time_spent = models.IntegerField()
+    date_submitted = models.DateTimeField(default=datetime.now)
+
+
+#------------------- Reset Password Email --------------------
 from django.dispatch import receiver
 from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created

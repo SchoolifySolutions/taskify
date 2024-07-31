@@ -109,7 +109,6 @@ def get_dept_by_id(request):
 @permission_classes([IsAuthenticated])
 def get_task_by_id(request):
     try:
-        print(request.data)
         task_id = request.data.get('task_id')
         task = Task.objects.get(id=task_id)
         serializer = TaskSerializer(task)
@@ -287,7 +286,6 @@ def new_tasks(request):
         return Response({'success': 'Task created successfully.'}, status=status.HTTP_201_CREATED)
 
     except Exception as e:
-        print(e)
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['POST'])
@@ -320,9 +318,9 @@ def get_team_by_dept(request):
                 dept = Department.objects.get(name=dept_name)
                 team_leads = CustomUser.objects.filter(display_team_lead=dept)
                 if (dept_name != "Dyne Management"):
-                    members = CustomUser.objects.filter(groups=1, department=dept)
+                    members = CustomUser.objects.filter(groups=4,department=dept)
                 else:
-                    members = CustomUser.objects.filter( department=dept)
+                    members = CustomUser.objects.filter(department=dept)
 
 
                 final_dict[dept.name] = {
@@ -334,13 +332,13 @@ def get_team_by_dept(request):
 
         return Response({'departments': final_dict})
     except Exception as e:
-        print(e)
         return Response({'error': str(e)}, status=500)
     
-# 1 Is Member
+
 # 2 Is Executive
 # 3 Is Management
-# 4 Is Superuser
+# 4 Is Member
+# 5 Is Superuser
 import os
 from django.conf import settings
 
@@ -367,14 +365,6 @@ def create_member(request):
         Email = row[4].value
         Groups = row[5].value
         username = (FN + LN).lower()
-
-        print(f"Creating user: {username}")
-        print(f"First Name: {FN}")
-        print(f"Last Name: {LN}")
-        print(f"Initials: {IN}")
-        print(f"Department: {Dept}")
-        print(f"Email: {Email}")
-        print(f"Groups: {Groups}")
         
         # Fetch Department instance or create if it doesn't exist
         department_instance, _ = Department.objects.get_or_create(name=Dept)
@@ -392,17 +382,14 @@ def create_member(request):
         if Groups:
             group_names = Groups.split(',')  # Assuming Groups are comma-separated
             groups = Group.objects.filter(name__in=group_names)
-            print(f"Fetched groups: {groups}")
             custom_user.groups.set(groups)  # No need to convert to list
 
         # Set department
         custom_user.department.add(department_instance)
-        print(f"Created custom_user: {custom_user}")
 
         # Append the created CustomUser object to the list
         users.append(custom_user)
 
     # Bulk create all users
     User.objects.bulk_create(users)
-
     return Response({'message': 'Users created successfully'}, status=200)

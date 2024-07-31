@@ -24,7 +24,6 @@ const SignupForm = () => {
 
       // Update this line to retrieve the token correctly
       const token = response.data["access_token"]; // assuming 'access' is the key for the Bearer token
-      console.log(response);
 
       // Set the Authorization header for future requests
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

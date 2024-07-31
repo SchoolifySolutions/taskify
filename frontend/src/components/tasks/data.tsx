@@ -34,7 +34,7 @@ export const statuses = [
     icon: CrossCircledIcon,
     department: "Development",
     bg:"bg-[red]",
-    class:"text-[red]"
+    class:"!text-[red]"
   },
   {
     value: "todo",

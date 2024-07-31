@@ -92,7 +92,7 @@ export default function Management() {
         department: task.department.name,
       }));
       setData(formattedData);
-      console.log(formattedData);
+
 
 
     } catch (error:any) {
@@ -103,7 +103,7 @@ export default function Management() {
 
   const fetchUsers = async(event:any) => {
     const token = localStorage.getItem("access_token");
-    console.log(department);
+
     const response2 = await axios.post(`${import.meta.env.VITE_URL}getusersbydept/`, {
       department:event.label,
     },{

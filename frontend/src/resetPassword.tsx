@@ -13,7 +13,6 @@ const ResetPasssword = () => {
   const [err, setErr] = useState("");
   const history = useNavigate();
   const  {resetId} = useParams();
-  console.log(resetId)
 
   const handleLogin = async (e:any) => {
     e.preventDefault();
