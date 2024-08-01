@@ -11,6 +11,7 @@ const SignupForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
+  
   const history = useNavigate();
 
   const handleLogin = async (e:any) => {
@@ -67,7 +68,7 @@ const SignupForm = () => {
             Forgot your password? <a href="/forgot-password/" className="text-blue-400">Reset it</a>
           </h2>
           <Button type="submit" className="bg-white px-[15%] text-black w-fit mx-auto hover:bg-gray-100 transition-all">
-            Submit
+            Login
           </Button>
         </form>
         <h2 className="absolute bottom-[1vw] left-[1vw] text-gray-200 text-[1.3ch]">

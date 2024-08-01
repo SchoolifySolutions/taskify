@@ -41,6 +41,11 @@ export function DataTableRowActions<TData>({
   const [Title, setTitle] = useState(""); // State for selected status
   const [Description, setDescription] = useState("");
   const [Url, setUrl] = useState("");
+  const [Hours, setHours] = useState(0);
+  const [selectedStatus, setStatus] = useState(statuses.find(
+    (status) => status.value === task.status
+  ));
+  
 
 
   
@@ -122,12 +127,31 @@ export function DataTableRowActions<TData>({
     setFilePopupVisible(true); // Show the file submission popup when the file icon is clicked
   };
 //{usrData["Username"]===row.getValue("assigned_by") || row.getValue("assigned_to").includes(usrData["Username"])?
+const handleProgress = async (e:any) => {
+  e.preventDefault();
+  try {
+     await axios.post(`${import.meta.env.VITE_URL}createprogressreport/`, {
+      user: usrData["Email"],
+      title: Title,
+      description: Description,
+      task_id: task.id,
+      url : Url,
+      hours : Hours
+    });
+
+
+  } catch (error:any) {
+    console.log(error.response?.data?.detail || "Error"); // handle error properly
+  }
+};
+
+
 
 
   return (
     <div className="w-fit flex items-center space-x-2">
       {/* File submission icon with click handler */}
-      <GoFileSubmodule size={24} color={"white"} onClick={handleFileClick} />
+      <GoFileSubmodule size={24} color={"white"} onClick={handleFileClick} className={"cursor-pointer"} />
 
       {/* Popup for file submission */}
       {isFilePopupVisible && (
@@ -136,8 +160,13 @@ export function DataTableRowActions<TData>({
             <Button className="absolute right-4 top-4 hover:text-[red]" onClick={() => setFilePopupVisible(false)}>
               Close
             </Button>
-            <div className="w-[50%] mx-auto mt-[15vh] my-auto">
-              <h1 className="text-left font-bold text-4xl mb-16">{task.title} -<br/> Progress Submission</h1>
+            <form onSubmit={handleProgress}>
+            <div className="w-[50%] mx-auto mt-[10vh] my-auto">
+              <h1 className="text-left font-bold text-3xl mb-10">{task.title} -<br/> Progress Submission</h1>
+              <div className="flex">
+                <div className={`flex border w-fit px-[0.5vw] rounded-lg py-[0.25vh] mb-4 `}><status.icon className="my-auto" /><h1 className={`text-xl ml-2 my-auto ${status.class}`}>{status.value}</h1></div>
+                <div className={`flex border w-fit px-[0.5vw] rounded-lg py-[0.25vh] mb-4 ml-4 `}><priority.icon className={`my-auto ${priority.class}`} /><h1 className={`text-xl ml-2 my-auto ${priority.class}`}>{priority.value}</h1></div>
+                </div>
               <Label className="text-lg mt-[3vh] mb-1">Title</Label>
               <input
             type="text"
@@ -154,14 +183,29 @@ export function DataTableRowActions<TData>({
           <Label className="text-lg mt-[3vh] mb-1">Image Url</Label>
               <input
             type="url"
-            className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-full"
+            className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-full mb-[3vh]"
             placeholder="https://drive.google.com/..."
             onChange={(e) => setUrl(e.target.value)}
             required
           />
+          <Label className="text-lg  mb-1">Hours Spent</Label>
+              <input
+            type="number"
+            className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-full"
+            placeholder="5"
+            min="0"
+            max="100"
+            onChange={(e:any) => setHours(e.target.value)}
+            required
+          />
+          <Button type="submit" className="bg-white px-[15%] mt-[5vh] text-black w-fit mx-auto hover:bg-gray-100 transition-all">
+            Submit
+          </Button>
               
             </div>
+            </form>
           </div>
+          
         </div>
       )}
 
