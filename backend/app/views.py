@@ -13,11 +13,17 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import update_session_auth_hash
-from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer
-from .models import CustomUser, Task, Department, Group
+from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer, ProgReportSerializer
+from .models import CustomUser, Task, Department, Group, ProgReport
 from django.shortcuts import get_object_or_404
+from datetime import datetime
 
 User = get_user_model()
+
+# 2 Is Executive
+# 3 Is Management
+# 4 Is Member
+# 5 Is Superuser
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -335,10 +341,34 @@ def get_team_by_dept(request):
         return Response({'error': str(e)}, status=500)
     
 
-# 2 Is Executive
-# 3 Is Management
-# 4 Is Member
-# 5 Is Superuser
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_progress_report(request):
+    task_id = request.data.get('task_id')
+    report_title = request.data.get('title')
+    report_user_email = request.data.get('user')
+    report_description = request.data.get('description')
+    report_hours = request.data.get('hours')
+
+    if not all([task_id, report_title, report_user_email, report_description, report_hours]):
+        return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    task = get_object_or_404(Task, id=task_id)
+    user = get_object_or_404(CustomUser, email=report_user_email)
+    
+    prog_report = ProgReport.objects.create(
+        user=user,
+        task=task,
+        report_title=report_title,
+        report_description=report_description,
+        time_spent=report_hours,
+        
+    )
+
+    return Response({'message': 'Success', 'prog_report_id': prog_report.id}, status=status.HTTP_201_CREATED)
+
+
+
 import os
 from django.conf import settings
 

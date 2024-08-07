@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Task, Department
+from .models import Task, Department,ProgReport
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,7 +22,14 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = ('id', 'assigned_users', 'department','created_user', 'department', 'task_title', 'task_description', 'task_due_date', 'task_status', 'priority')
 
+class ProgReportSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    task = TaskSerializer()
 
+
+    class Meta:
+        model = ProgReport
+        fields = '__all__'
 
 class ResetPasswordEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)

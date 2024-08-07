@@ -40,4 +40,6 @@ urlpatterns = [
     path('getusersbydept/', views.get_users_by_dept, name='getuserbydept'),
     path('newtask/', views.new_tasks, name="newtask"),
     path('createmember/', views.create_member, name="create_member"),
+    path('createprogressreport/', views.create_progress_report, name="create progress report"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
