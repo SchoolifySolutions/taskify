@@ -435,7 +435,10 @@ export function DataTableRowActions<TData>({
                         <h1 className="text-neutral-300 mr-1">
                           {report.user.username},{" "}
                         </h1>
-                        <a href={report.link} className="text-neutral-400">
+                        <a
+                          href={report.report_url}
+                          className="text-neutral-400"
+                        >
                           {report.report_url}
                         </a>
                       </div>
