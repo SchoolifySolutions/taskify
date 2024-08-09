@@ -25,11 +25,15 @@ class TaskSerializer(serializers.ModelSerializer):
 class ProgReportSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     task = TaskSerializer()
-
+    formatted_date_submitted = serializers.DateTimeField(
+        source='date_submitted',
+        format='%m/%d/%y',
+        read_only=True
+    )
 
     class Meta:
         model = ProgReport
-        fields = '__all__'
+        fields = ['user', 'task', 'report_title', 'report_description', 'report_url', 'time_spent', 'formatted_date_submitted']
 
 class ResetPasswordEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)

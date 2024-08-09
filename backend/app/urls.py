@@ -34,6 +34,7 @@ urlpatterns = [
     path('changetaskpriority/', views.change_task_priority, name='changetaskpriority'),
     path('gettaskbyid/', views.get_task_by_id, name='gettaskbyid'),
     path('getteambydept/', views.get_team_by_dept, name='get_team_by_dept'),
+    path('getprogressreports/', views.get_progress_reports, name='get_progress_reports'),
     path('deletetask/', views.delete_task, name='deletetask'),
     path('assigntasks/', views.assign_tasks, name='assigntasks'),
     path('yourtasks/', views.your_tasks, name='your_tasks'),

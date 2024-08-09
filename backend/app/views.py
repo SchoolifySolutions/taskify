@@ -349,6 +349,7 @@ def create_progress_report(request):
     report_user_email = request.data.get('user')
     report_description = request.data.get('description')
     report_hours = request.data.get('hours')
+    report_url = request.data.get('url')
 
     if not all([task_id, report_title, report_user_email, report_description, report_hours]):
         return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -362,10 +363,26 @@ def create_progress_report(request):
         report_title=report_title,
         report_description=report_description,
         time_spent=report_hours,
+        report_url=report_url
         
     )
 
-    return Response({'message': 'Success', 'prog_report_id': prog_report.id}, status=status.HTTP_201_CREATED)
+    return Response({'message': 'Success'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_progress_reports(request):
+    task_id = request.data.get('task_id')
+    task_obj = get_object_or_404(Task, id=task_id)
+    
+    # Fetch all ProgReport objects associated with the task
+    reports = ProgReport.objects.filter(task=task_obj)
+    
+    # Serialize the queryset with many=True to allow for multiple objects
+    final_rep = ProgReportSerializer(reports, many=True)
+    
+    return Response(final_rep.data, status=status.HTTP_200_OK)
 
 
 

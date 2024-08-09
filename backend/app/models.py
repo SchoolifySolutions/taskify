@@ -124,8 +124,10 @@ class ProgReport(models.Model):
     )
     report_title = models.CharField(max_length=500)
     report_description = models.TextField()
+    report_url = models.URLField()
     time_spent = models.IntegerField()
-    date_submitted = models.DateTimeField(default=datetime.now)
+    date_submitted = models.DateTimeField(default=datetime.today)
+    
 
 
 #------------------- Reset Password Email --------------------
