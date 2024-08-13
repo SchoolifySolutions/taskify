@@ -14,7 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import update_session_auth_hash
 from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer, ProgReportSerializer
-from .models import CustomUser, Task, Department, Group, ProgReport
+from .models import CustomUser, Task, Department, Group, ProgReport,SP
 from django.shortcuts import get_object_or_404
 from datetime import datetime
 
@@ -385,58 +385,103 @@ def get_progress_reports(request):
     return Response(final_rep.data, status=status.HTTP_200_OK)
 
 
+import secrets
+import string
+import json
+
+def generate_password(length=20):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    return ''.join(secrets.choice(characters) for _ in range(length))
+
+@api_view(['GET'])
+def create_passwords(request):
+    passwords = [generate_password() for _ in range(50)]
+    passwords_json = json.dumps(passwords)
+
+    # Ensure you only have one SP instance or handle accordingly
+    if SP.objects.exists():
+        sp_instance = SP.objects.first()
+        sp_instance.SP_dict = passwords_json
+        sp_instance.save()
+    else:
+        SP.objects.create(SP_dict=passwords_json)
+
+    return Response({'success'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])  # Assuming you are sending the password in a POST request
+def validate_pass(request):
+    passw = request.data.get('password')
+    
+    # Retrieve the SP object
+    obj = get_object_or_404(SP, id=1)
+    
+    # Load the passwords from the JSON field
+    try:
+        passwords = json.loads(obj.SP_dict)
+    except json.JSONDecodeError:
+        return Response({'error': 'Failed to decode passwords'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    # Check if the password exists in the list
+    if passw in passwords:
+        print(passw)
+        # Remove the used password
+        passwords.remove(passw)
+        
+        # Save the updated password list back to the database
+        obj.SP_dict = json.dumps(passwords)
+        obj.save()
+        
+        return Response({'Authorization Successful'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 import os
 from django.conf import settings
+import random
 
-@api_view(['GET'])
-def create_member(request):
-    User = get_user_model()
-
-    # Get the absolute path to the Excel file
-    excel_file = os.path.join(settings.BASE_DIR, 'app', 'acc.xlsx')
-
-    # Load the workbook
-    workbook = openpyxl.load_workbook(excel_file)
-
-    # Assuming you want to work with the active sheet
-    worksheet = workbook.active
-
-    users = []
-
-    for row in worksheet.iter_rows(min_row=0, max_row=worksheet.max_row, min_col=1, max_col=worksheet.max_column):
-        FN = row[0].value
-        LN = row[1].value
-        IN = row[2].value
-        Dept = row[3].value
-        Email = row[4].value
-        Groups = row[5].value
-        username = (FN + LN).lower()
+@api_view(['POST'])
+def signup(request):
+    try:
+        User = get_user_model()  # Get the user model
+        print(request.data)
         
-        # Fetch Department instance or create if it doesn't exist
-        department_instance, _ = Department.objects.get_or_create(name=Dept)
+        dept = request.data.get('department')
+        fname = request.data.get('firstName')
+        lname = request.data.get('lastName')
+        email = request.data.get('username')
+        password = request.data.get('password')
+        
+        username = str(fname).lower() + str(lname).lower()
+        initials = fname[0].upper() + lname[0].upper()
 
-        # Create CustomUser instance
-        custom_user = User(
+        # Retrieve or create the department instance
+        department_instance, _ = Department.objects.get_or_create(name=dept)
+
+        id = random.randint(111111, 999999)
+        objects = User.objects.filter(id = id)
+
+        while objects:
+            id = random.randint(111111, 999999)
+            objects = User.objects.filter(id = id)
+        
+
+        # Create the user instance
+        custom_user = User.objects.create_user(
             username=username,
-            email=Email,
-            first_name=FN,
-            last_name=LN,
-            initials=IN,
+            email=email,
+            first_name=fname,
+            last_name=lname,
+            initials=initials,
+            password=password,
+            id = id
         )
 
-        # Set groups
-        if Groups:
-            group_names = Groups.split(',')  # Assuming Groups are comma-separated
-            groups = Group.objects.filter(name__in=group_names)
-            custom_user.groups.set(groups)  # No need to convert to list
-
-        # Set department
+        # Assign the department to the user
         custom_user.department.add(department_instance)
+        custom_user.save()
 
-        # Append the created CustomUser object to the list
-        users.append(custom_user)
-
-    # Bulk create all users
-    User.objects.bulk_create(users)
-    return Response({'message': 'Users created successfully'}, status=200)
+        return Response({'message': 'User created successfully'}, status=200)
+    except Exception as e:
+        print(e)
+        return Response({'message': 'Error creating user'}, status=500)

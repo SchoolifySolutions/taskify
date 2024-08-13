@@ -1,20 +1,20 @@
 import { Button } from "./components/ui/button";
 import { Label } from "./components/ui/label";
-import  { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AlertDestructive } from "./components/Alert";
 import picture from "./assets/login2.png";
 import logo from "./assets/logo.png";
 
-const SignupForm = () => {
+const Loginform = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
-  
+
   const history = useNavigate();
 
-  const handleLogin = async (e:any) => {
+  const handleLogin = async (e: any) => {
     e.preventDefault();
     try {
       const response = await axios.post(`${import.meta.env.VITE_URL}login/`, {
@@ -31,23 +31,32 @@ const SignupForm = () => {
       localStorage.setItem("access_token", token); // store as 'access_token'
       localStorage.setItem("Data", JSON.stringify(response.data));
       history("/home");
-    } catch (error:any) {
+    } catch (error: any) {
       setErr(error.response?.data?.detail || "Login failed, please try again."); // handle error properly
     }
   };
 
   return (
     <div className="flex w-screen relative h-screen">
-      {err && (
-        <AlertDestructive description={`${err}, Please try again`} />
-      )}
+      {err && <AlertDestructive description={`${err}, Please try again`} />}
       <div className="w-[40%] h-screen my-auto relative">
-        <form onSubmit={handleLogin} className="w-[70%] mx-auto h-fit my-auto pt-[15vh] flex flex-col">
+        <form
+          onSubmit={handleLogin}
+          className="w-[70%] mx-auto h-fit my-auto pt-[15vh] flex flex-col"
+        >
           <div className="flex gap-4">
-            <img src={logo} className="mb-[4vh] w-[3vw] mx-auto rounded-xl" alt="Logo" />
+            <img
+              src={logo}
+              className="mb-[4vh] w-[3vw] mx-auto rounded-xl"
+              alt="Logo"
+            />
           </div>
-          <h1 className="text-center font-bold text-[3.5ch]">Log in to your account</h1>
-          <h2 className="text-center text-gray-400 text-[1.9ch] mb-[5vh]">Please continue to Dyne's Employee Platform</h2>
+          <h1 className="text-center font-bold text-[3.5ch]">
+            Log in to your account
+          </h1>
+          <h2 className="text-center text-gray-400 text-[1.9ch] mb-[5vh]">
+            Please continue to Dyne's Employee Platform
+          </h2>
           <Label className="text-lg mb-1">Email</Label>
           <input
             type="email"
@@ -65,9 +74,15 @@ const SignupForm = () => {
             required
           />
           <h2 className="text-center text-gray-400 text-[1.5ch] mb-[6vh]">
-            Forgot your password? <a href="/forgot-password/" className="text-blue-400">Reset it</a>
+            Forgot your password?{" "}
+            <a href="/forgot-password/" className="text-blue-400">
+              Reset it
+            </a>
           </h2>
-          <Button type="submit" className="bg-white px-[15%] text-black w-fit mx-auto hover:bg-gray-100 transition-all">
+          <Button
+            type="submit"
+            className="bg-white px-[15%] text-black w-fit mx-auto hover:bg-gray-100 transition-all"
+          >
             Login
           </Button>
         </form>
@@ -75,9 +90,13 @@ const SignupForm = () => {
           Copyright © Dyne Research 2024. All rights reserved.
         </h2>
       </div>
-      <img className="w-[60%] object-cover object-right" src={picture} alt="Background" />
+      <img
+        className="w-[60%] object-cover object-right"
+        src={picture}
+        alt="Background"
+      />
     </div>
   );
 };
 
-export default SignupForm;
+export default Loginform;

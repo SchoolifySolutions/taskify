@@ -157,3 +157,6 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         [reset_password_token.user.email],
         fail_silently=False,
     )
+
+class SP(models.Model):
+    SP_dict = models.CharField(max_length=100000, unique=True)
