@@ -41,9 +41,6 @@ export default function Team() {
           <div>
             <div>
               <h2 className="text-3xl font-bold tracking-tight">Your Teams</h2>
-              <p className="text-muted-foreground mb-[2vh]">
-                Here are all the Teams you are a part of.
-              </p>
             </div>
           </div>
 
