@@ -29,7 +29,7 @@ urlpatterns = [
     path('change_password/', views.change_password, name='change_password'),
     path('department_tasks/', views.get_department_tasks, name='department_tasks'),
     path('getdeptbyid/', views.get_dept_by_id, name='getdeptbyid'),
-    path('createpass/', views.create_passwords, name = 'create_passwords'),
+    #path('createpass/', views.create_passwords, name = 'create_passwords'),
     path('validatepass/', views.validate_pass, name='validate_pass'),
     path('getuserbuid/', views.get_user_by_id, name='getuserbyid'),
     path('changetaskstatus/', views.change_task_status, name='changetaskstatus'),
@@ -43,6 +43,8 @@ urlpatterns = [
     path('getusersbydept/', views.get_users_by_dept, name='getuserbydept'),
     path('newtask/', views.new_tasks, name="newtask"),
     path('signup/', views.signup, name="signup"),
+    path('bootcampreg/', views.bootcampregisteration, name="bootcampregisteration"),
     path('createprogressreport/', views.create_progress_report, name="create progress report"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 

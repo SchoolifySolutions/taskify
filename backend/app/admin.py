@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from .models import Task, Department, CustomUser
+from .models import Task, Department, CustomUser, SP
 
 User = get_user_model()
 
@@ -29,3 +29,4 @@ class CustomUserAdmin(admin.ModelAdmin):
     department_list.short_description = 'Departments'
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(SP)

@@ -422,24 +422,25 @@ export function DataTableRowActions<TData>({
                       key={report.id}
                       className="border-[1px] px-[1vw] py-[1vh] border-white w-full min-h-[10vh] rounded-xl relative my-5"
                     >
-                      <h1 className="text-xl">
-                        {report.report_title}{" "}
-                        <span className="text-neutral-300 !text-base">
-                          {report.time_spent} hours spent
-                        </span>
-                      </h1>
-                      <h1 className="text-lg absolute right-[1vw] top-[1vh] text-neutral-400">
+                      <h1 className="text-lg mb-1">{report.report_title}</h1>
+
+                      <h1 className="text-md absolute right-[1vw] top-[2vh] text-neutral-400">
                         {report.formatted_date_submitted}
                       </h1>
-                      <div className="flex mb-2">
-                        <h1 className="text-neutral-300 mr-1">
+                      <div className="flex mb-2 gap-2">
+                        <span className="text-neutral-200  ">
+                          {report.time_spent} hours spent,
+                        </span>
+                        <h1 className="text-neutral-300 ">
                           {report.user.username},{" "}
                         </h1>
                         <a
                           href={report.report_url}
-                          className="text-neutral-400"
+                          className="text-neutral-400  "
                         >
-                          {report.report_url}
+                          {report.report_url.length > 60
+                            ? `${report.report_url.slice(0, 60)}...`
+                            : report.report_url}
                         </a>
                       </div>
                       <h1 className="text-neutral-200">

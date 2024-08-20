@@ -485,3 +485,87 @@ def signup(request):
     except Exception as e:
         print(e)
         return Response({'message': 'Error creating user'}, status=500)
+    
+from django.core.mail import send_mail, EmailMessage,EmailMultiAlternatives
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def bootcampregisteration(request):
+    name = request.data.get('name')
+    email = request.data.get('email')
+    age = request.data.get('age')
+    phone_number = request.data.get('phone_number')
+    linkedin = request.data.get('linkedin')
+    experience = request.data.get('experience')
+    school = request.data.get('school')
+    country = request.data.get('country')
+    where = request.data.get('where')
+
+    print(request.data)
+
+    # Prepare plain text message
+    email_plaintext_message = (
+        "Name: " + str(name) + "\n" +
+        "Email: " + str(email) + "\n" +
+        "Age: " + str(age) + "\n" +
+        "Phone Number: " + str(phone_number) + "\n" +
+        "LinkedIn: " + str(linkedin) + "\n" +
+        "Experience: " + str(experience) + "\n" +
+        "School: " + str(school) + "\n" +
+        "Country: " + str(country) + "\n" +
+        "Where: " + str(where) + "\n"
+    )
+
+    # Prepare HTML message
+    html_message = render_to_string('email.html', {
+        'name': name,
+        'email': email,
+        'age': age,
+        'phone_number': phone_number,
+        'linkedin': linkedin,
+        'experience': experience,
+        'school': school,
+        'country': country,
+        'where': where,
+    })
+
+    try:
+        # Send plain text email
+        plain_email = EmailMessage(
+            "Bootcamp Signup Submission - " + str(name),
+            email_plaintext_message,
+            "dyneresearch@gmail.com",
+            ["varshith.gudeus@gmail.com","sasidhar.jasty@gmail.com", "dyneresearch@gmail.com"],  # Recipients for plain text
+        )
+        plain_email.send()
+        print("normal sent")
+
+        # Send HTML email
+        email_message = EmailMessage(
+            subject="Dyne Bootcamp Signup Submission Received - Next Steps",
+            body=html_message,  # Use HTML message as the body
+            from_email="dyneresearch@gmail.com",
+            to=["sasidhar.jasty@gmail.com", "dyneresearch@gmail.com", "varshith.gudeus@gmail.com"],
+            # Blind Carbon Copy to the email address submitted by the user
+            bcc=[email]
+        )
+        # Set the content type to HTML
+        email_message.content_subtype = "html"
+        
+        # Send the email
+        email_message.send()
+        print("Html sent")
+    
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return Response({'message': 'Failed to send email'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response({'message': 'Submission successful'}, status=status.HTTP_200_OK)
+
+
