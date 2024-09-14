@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AlertDestructive } from "./components/Alert";
-import picture from "./assets/login2.png";
+import picture from "./assets/bg.png";
 import logo from "./assets/logo.png";
 import Select from "react-select";
 
@@ -106,7 +106,7 @@ const SignupForm = () => {
           <div className="flex gap-4">
             <img
               src={logo}
-              className="mb-[4vh] w-[3vw] mx-auto rounded-xl"
+              className=" w-[12vw] -mt-[10vh] mx-auto rounded-xl"
               alt="Logo"
             />
           </div>
