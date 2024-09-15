@@ -13,11 +13,22 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import update_session_auth_hash
+<<<<<<< HEAD
 from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer
 from .models import CustomUser, Task, Department, Group, ProgReport
+=======
+from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer, ProgReportSerializer
+from .models import CustomUser, Task, Department, Group, ProgReport,SP
+>>>>>>> bd260253f1d1f6324eb63de89660ee1084e87642
 from django.shortcuts import get_object_or_404
+from datetime import datetime
 
 User = get_user_model()
+
+# 2 Is Executive
+# 3 Is Management
+# 4 Is Member
+# 5 Is Superuser
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -335,61 +346,235 @@ def get_team_by_dept(request):
         return Response({'error': str(e)}, status=500)
     
 
-# 2 Is Executive
-# 3 Is Management
-# 4 Is Member
-# 5 Is Superuser
-import os
-from django.conf import settings
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_progress_report(request):
+    task_id = request.data.get('task_id')
+    report_title = request.data.get('title')
+    report_user_email = request.data.get('user')
+    report_description = request.data.get('description')
+    report_hours = request.data.get('hours')
+    report_url = request.data.get('url')
+
+    if not all([task_id, report_title, report_user_email, report_description, report_hours]):
+        return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    task = get_object_or_404(Task, id=task_id)
+    user = get_object_or_404(CustomUser, email=report_user_email)
+    
+    prog_report = ProgReport.objects.create(
+        user=user,
+        task=task,
+        report_title=report_title,
+        report_description=report_description,
+        time_spent=report_hours,
+        report_url=report_url
+        
+    )
+
+    return Response({'message': 'Success'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_progress_reports(request):
+    task_id = request.data.get('task_id')
+    task_obj = get_object_or_404(Task, id=task_id)
+    
+    # Fetch all ProgReport objects associated with the task
+    reports = ProgReport.objects.filter(task=task_obj)
+    
+    # Serialize the queryset with many=True to allow for multiple objects
+    final_rep = ProgReportSerializer(reports, many=True)
+    
+    return Response(final_rep.data, status=status.HTTP_200_OK)
+
+
+import secrets
+import string
+import json
+
+def generate_password(length=20):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    return ''.join(secrets.choice(characters) for _ in range(length))
 
 @api_view(['GET'])
-def create_member(request):
-    User = get_user_model()
+def create_passwords(request):
+    passwords = [generate_password() for _ in range(50)]
+    passwords_json = json.dumps(passwords)
 
-    # Get the absolute path to the Excel file
-    excel_file = os.path.join(settings.BASE_DIR, 'app', 'acc.xlsx')
+    # Ensure you only have one SP instance or handle accordingly
+    if SP.objects.exists():
+        sp_instance = SP.objects.first()
+        sp_instance.SP_dict = passwords_json
+        sp_instance.save()
+    else:
+        SP.objects.create(SP_dict=passwords_json)
 
-    # Load the workbook
-    workbook = openpyxl.load_workbook(excel_file)
+    return Response({'success'}, status=status.HTTP_200_OK)
 
-    # Assuming you want to work with the active sheet
-    worksheet = workbook.active
-
-    users = []
-
-    for row in worksheet.iter_rows(min_row=0, max_row=worksheet.max_row, min_col=1, max_col=worksheet.max_column):
-        FN = row[0].value
-        LN = row[1].value
-        IN = row[2].value
-        Dept = row[3].value
-        Email = row[4].value
-        Groups = row[5].value
-        username = (FN + LN).lower()
+@api_view(['POST'])  # Assuming you are sending the password in a POST request
+def validate_pass(request):
+    passw = request.data.get('password')
+    
+    # Retrieve the SP object
+    obj = get_object_or_404(SP, id=1)
+    
+    # Load the passwords from the JSON field
+    try:
+        passwords = json.loads(obj.SP_dict)
+    except json.JSONDecodeError:
+        return Response({'error': 'Failed to decode passwords'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    # Check if the password exists in the list
+    if passw in passwords:
+        print(passw)
+        # Remove the used password
+        passwords.remove(passw)
         
-        # Fetch Department instance or create if it doesn't exist
-        department_instance, _ = Department.objects.get_or_create(name=Dept)
+        # Save the updated password list back to the database
+        obj.SP_dict = json.dumps(passwords)
+        obj.save()
+        
+        return Response({'Authorization Successful'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Create CustomUser instance
-        custom_user = User(
+
+import os
+from django.conf import settings
+import random
+
+@api_view(['POST'])
+def signup(request):
+    try:
+        User = get_user_model()  # Get the user model
+        print(request.data)
+        
+        dept = request.data.get('department')
+        fname = request.data.get('firstName')
+        lname = request.data.get('lastName')
+        email = request.data.get('username')
+        password = request.data.get('password')
+        
+        username = str(fname).lower() + str(lname).lower()
+        initials = fname[0].upper() + lname[0].upper()
+
+        # Retrieve or create the department instance
+        department_instance, _ = Department.objects.get_or_create(name=dept)
+
+        id = random.randint(111111, 999999)
+        objects = User.objects.filter(id = id)
+
+        while objects:
+            id = random.randint(111111, 999999)
+            objects = User.objects.filter(id = id)
+        
+
+        # Create the user instance
+        custom_user = User.objects.create_user(
             username=username,
-            email=Email,
-            first_name=FN,
-            last_name=LN,
-            initials=IN,
+            email=email,
+            first_name=fname,
+            last_name=lname,
+            initials=initials,
+            password=password,
+            id = id
         )
 
-        # Set groups
-        if Groups:
-            group_names = Groups.split(',')  # Assuming Groups are comma-separated
-            groups = Group.objects.filter(name__in=group_names)
-            custom_user.groups.set(groups)  # No need to convert to list
-
-        # Set department
+        # Assign the department to the user
         custom_user.department.add(department_instance)
+        custom_user.save()
 
-        # Append the created CustomUser object to the list
-        users.append(custom_user)
+        return Response({'message': 'User created successfully'}, status=200)
+    except Exception as e:
+        print(e)
+        return Response({'message': 'Error creating user'}, status=500)
+    
+from django.core.mail import send_mail, EmailMessage,EmailMultiAlternatives
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def bootcampregisteration(request):
+    name = request.data.get('name')
+    email = request.data.get('email')
+    age = request.data.get('age')
+    phone_number = request.data.get('phone_number')
+    linkedin = request.data.get('linkedin')
+    experience = request.data.get('experience')
+    school = request.data.get('school')
+    country = request.data.get('country')
+    where = request.data.get('where')
 
+    print(request.data)
+
+    # Prepare plain text message
+    email_plaintext_message = (
+        "Name: " + str(name) + "\n" +
+        "Email: " + str(email) + "\n" +
+        "Age: " + str(age) + "\n" +
+        "Phone Number: " + str(phone_number) + "\n" +
+        "LinkedIn: " + str(linkedin) + "\n" +
+        "Experience: " + str(experience) + "\n" +
+        "School: " + str(school) + "\n" +
+        "Country: " + str(country) + "\n" +
+        "Where: " + str(where) + "\n"
+    )
+
+    # Prepare HTML message
+    html_message = render_to_string('email.html', {
+        'name': name,
+        'email': email,
+        'age': age,
+        'phone_number': phone_number,
+        'linkedin': linkedin,
+        'experience': experience,
+        'school': school,
+        'country': country,
+        'where': where,
+    })
+
+    try:
+        # Send plain text email
+        plain_email = EmailMessage(
+            "Bootcamp Signup Submission - " + str(name),
+            email_plaintext_message,
+            "dyneresearch@gmail.com",
+            ["varshith.gudeus@gmail.com","sasidhar.jasty@gmail.com", "dyneresearch@gmail.com"],  # Recipients for plain text
+        )
+        plain_email.send()
+        print("normal sent")
+
+        # Send HTML email
+        email_message = EmailMessage(
+            subject="Dyne Bootcamp Signup Submission Received - Next Steps",
+            body=html_message,  # Use HTML message as the body
+            from_email="dyneresearch@gmail.com",
+            to=["sasidhar.jasty@gmail.com", "dyneresearch@gmail.com", "varshith.gudeus@gmail.com"],
+            # Blind Carbon Copy to the email address submitted by the user
+            bcc=[email]
+        )
+        # Set the content type to HTML
+        email_message.content_subtype = "html"
+        
+        # Send the email
+        email_message.send()
+        print("Html sent")
+    
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return Response({'message': 'Failed to send email'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response({'message': 'Submission successful'}, status=status.HTTP_200_OK)
+
+
+<<<<<<< HEAD
     # Bulk create all users
     User.objects.bulk_create(users)
     return Response({'message': 'Users created successfully'}, status=200)
@@ -421,3 +606,5 @@ def createprogressreport(request):
         return Response("Successful Progress Report Submission", status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=500)
+=======
+>>>>>>> bd260253f1d1f6324eb63de89660ee1084e87642

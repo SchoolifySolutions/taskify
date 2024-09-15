@@ -127,9 +127,15 @@ class ProgReport(models.Model):
     )
     report_title = models.CharField(max_length=500)
     report_description = models.TextField()
+    report_url = models.URLField()
     time_spent = models.IntegerField()
+<<<<<<< HEAD
     url = models.URLField(blank=True, null=True)
     date_submitted = models.DateTimeField(default=datetime.now)
+=======
+    date_submitted = models.DateTimeField(default=datetime.today)
+    
+>>>>>>> bd260253f1d1f6324eb63de89660ee1084e87642
 
     def __str__(self):
         return "Task " + str(self.task.id) + ": " + self.task.task_title + " - Prog Report #" + str(self.id)
@@ -162,3 +168,6 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         [reset_password_token.user.email],
         fail_silently=False,
     )
+
+class SP(models.Model):
+    SP_dict = models.CharField(max_length=100000, unique=True)
