@@ -66,10 +66,6 @@ export default function Team() {
                           <div className="font-semibold">Sasidhar  Jasty</div>
                           <div className="text-sm text-gray-300">sasidharjasty, <span className="font-normal text-gray-300">sasidhar.jasty@gmail.com</span></div>
                     </div>
-                    <div className="mb-2 p-4 bg-neutral-700 rounded-lg">
-                          <div className="font-semibold">Vishruth Anugula</div>
-                          <div className="text-sm text-gray-300">vishruthanugula, <span className="font-normal text-gray-300">emailvishhere@gmail.com</span></div>
-                    </div>
                   <div className="">
                     
                   </div>

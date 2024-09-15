@@ -105,6 +105,9 @@ class Task(models.Model):
         verbose_name = _('task')
         verbose_name_plural = _('tasks')
 
+    def __str__(self):
+        return "Task " + str(self.id) + " - " + str(self.task_title)
+
 
 from datetime import datetime
 #------------------- ProgReport Model --------------------
@@ -125,7 +128,11 @@ class ProgReport(models.Model):
     report_title = models.CharField(max_length=500)
     report_description = models.TextField()
     time_spent = models.IntegerField()
+    url = models.URLField(blank=True, null=True)
     date_submitted = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return "Task " + str(self.task.id) + ": " + self.task.task_title + " - Prog Report #" + str(self.id)
 
 
 #------------------- Reset Password Email --------------------

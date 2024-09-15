@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from .models import Task, Department, CustomUser
+from .models import Task, Department, CustomUser, ProgReport
 
 User = get_user_model()
 
@@ -16,6 +16,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 admin.site.register(Task, TaskAdmin)
 admin.site.register(Department)
+admin.site.register(ProgReport)
 
 
 class CustomUserAdmin(admin.ModelAdmin):

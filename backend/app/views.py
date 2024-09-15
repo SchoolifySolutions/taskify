@@ -14,7 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import update_session_auth_hash
 from .serializers import ChangePasswordSerializer, TaskSerializer, DepartmentSerializer, UserSerializer
-from .models import CustomUser, Task, Department, Group
+from .models import CustomUser, Task, Department, Group, ProgReport
 from django.shortcuts import get_object_or_404
 
 User = get_user_model()
@@ -393,3 +393,31 @@ def create_member(request):
     # Bulk create all users
     User.objects.bulk_create(users)
     return Response({'message': 'Users created successfully'}, status=200)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createprogressreport(request):
+    try:
+        user_email = request.data.get('user')
+        user = CustomUser.objects.get(email=user_email)
+        title = request.data.get('title')
+        description = request.data.get('description')
+        task_id = request.data.get('task_id')
+        task = Task.objects.get(id=task_id)
+        url = request.data.get('url')
+        hours = request.data.get('hours')
+
+        report = ProgReport(
+            user = user, 
+            task = task, 
+            report_title = title,
+            report_description = description,
+            time_spent = hours,
+            url = url,
+        )
+       
+        report.save()
+        
+        return Response("Successful Progress Report Submission", status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)

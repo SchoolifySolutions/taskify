@@ -89,8 +89,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Add these at the top of your settings.py
 from os import getenv
-from dotenv import load_dotenv
-import dj_database_url
 import os
 
 # Replace the DATABASES section of your settings.py with this
