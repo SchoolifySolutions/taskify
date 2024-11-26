@@ -8,8 +8,8 @@ import picture from "./assets/bg.png";
 import logo from "./assets/logo.png";
 
 const Loginform = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("demouser@workflow.com");
+  const [password, setPassword] = useState("Testuser!");
   const [err, setErr] = useState("");
 
   const history = useNavigate();
@@ -47,15 +47,15 @@ const Loginform = () => {
           <div className="flex gap-4">
             <img
               src={logo}
-              className=" w-[12vw] -mt-[10vh] mx-auto rounded-xl"
+              className=" w-[12vw] -mt-[5vh] mx-auto rounded-xl"
               alt="Logo"
             />
           </div>
-          <h1 className="text-center font-bold text-[3.5ch]">
+          <h1 className="text-center font-bold text-[3.5ch] mt-10">
             Log in to your account
           </h1>
-          <h2 className="text-center text-gray-400 text-[1.9ch] mb-[5vh]">
-            Please continue to Dyne's Employee Platform
+          <h2 className="text-center text-gray-400 text-[1.9ch] mb-[7vh]">
+            Please continue to our Employee Platform
           </h2>
           <Label className="text-lg mb-1">Email</Label>
           <input
@@ -63,6 +63,7 @@ const Loginform = () => {
             className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh]"
             placeholder="example@gmail.com"
             onChange={(e) => setEmail(e.target.value)}
+            value={email}
             required
           />
           <Label className="text-lg mt-[3vh] mb-1">Password</Label>
@@ -71,6 +72,7 @@ const Loginform = () => {
             className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] mb-[2vh]"
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
+            value={password}
             required
           />
           <h2 className="text-center text-gray-400 text-[1.5ch] mb-[6vh]">
@@ -87,7 +89,7 @@ const Loginform = () => {
           </Button>
         </form>
         <h2 className="absolute bottom-[1vw] left-[1vw] text-gray-200 text-[1.3ch]">
-          Copyright © Dyne Research 2024. All rights reserved.
+          Copyright © Varshith Gude 2024. All rights reserved.
         </h2>
       </div>
       <img

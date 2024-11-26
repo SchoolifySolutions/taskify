@@ -40,7 +40,8 @@ export default function Team() {
         <div className="w-[80%] mx-auto py-8">
           <div>
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">Your Teams</h2>
+              <h2 className="text-3xl font-bold tracking-tight mb-2">Your Teams</h2>
+              <p className="text tracking-tight mb-5">Disclaimer: The data presented below is a sample dataset created solely for the purpose of project demonstration and presentation.</p>
             </div>
           </div>
 
@@ -49,55 +50,17 @@ export default function Team() {
               <div className="relative">
                 <TiPinOutline className="absolute right-0 top-0" size={24} />
 
-<<<<<<< HEAD
-                <h2 className="text-2xl font-bold mb-4 border-b text-blue-500 border-gray-700 pb-2">Executives</h2>
-                </div>
-                
-                <div className="mb-4 relative">
-
-                 
-                </div>
-                <div className='relative'>
-                  <h3 className="text-xl font-semibold mb-2">Members <span className="absolute right-0 text-gray-500">4</span></h3>
-                  <div  className="mb-2 p-4 bg-neutral-700 rounded-lg">
-                          <div className="font-semibold">Sumeet Mahakud</div>
-                          <div className="text-sm text-gray-300">summet, <span className="font-normal text-gray-300">sumeetmajakud@gmail.com</span></div>
-                    </div>
-                    <div  className="mb-2 p-4 bg-neutral-700 rounded-lg">
-                          <div className="font-semibold">Varshith Gude</div>
-                          <div className="text-sm text-gray-300">varshithgude, 
-                          <span className="font-normal text-gray-300">varshith.gudeus@gmail.com</span></div>
-                    </div>
-                    <div  className="mb-2 p-4 bg-neutral-700 rounded-lg">
-                          <div className="font-semibold">Sasidhar  Jasty</div>
-                          <div className="text-sm text-gray-300">sasidharjasty, <span className="font-normal text-gray-300">sasidhar.jasty@gmail.com</span></div>
-                    </div>
-                  <div className="">
-                    
-                  </div>
-                </div>
-=======
                 <h2 className="text-2xl font-bold mb-4 border-b text-blue-500 border-gray-700 pb-2">
-                  Executives
+                  Project By:
                 </h2>
->>>>>>> bd260253f1d1f6324eb63de89660ee1084e87642
               </div>
 
               <div className="mb-4 relative"></div>
               <div className="relative">
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 ">
                   Members{" "}
-                  <span className="absolute right-0 text-gray-500">4</span>
+                  <span className="absolute right-0 text-gray-500">2</span>
                 </h3>
-                <div className="mb-2 p-4 bg-neutral-700 rounded-lg">
-                  <div className="font-semibold">Sumeet Mahakud</div>
-                  <div className="text-sm text-gray-300">
-                    summet,{" "}
-                    <span className="font-normal text-gray-300">
-                      sumeetmajakud@gmail.com
-                    </span>
-                  </div>
-                </div>
                 <div className="mb-2 p-4 bg-neutral-700 rounded-lg">
                   <div className="font-semibold">Varshith Gude</div>
                   <div className="text-sm text-gray-300">

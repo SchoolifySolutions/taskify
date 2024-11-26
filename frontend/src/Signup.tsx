@@ -16,7 +16,7 @@ const SignupForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [poppassword, setPopPassword] = useState("");
-  const [popover, setPopover] = useState(true);
+  const [popover, setPopover] = useState(false);
   const history = useNavigate();
 
   const departments = [

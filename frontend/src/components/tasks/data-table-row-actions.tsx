@@ -131,34 +131,6 @@ export function DataTableRowActions<TData>({
   const handleFileClick = () => {
     setFilePopupVisible(true); // Show the file submission popup when the file icon is clicked
   };
-<<<<<<< HEAD
-//{usrData["Username"]===row.getValue("assigned_by") || row.getValue("assigned_to").includes(usrData["Username"])?
-const handleProgress = async (e:any) => {
-  e.preventDefault();
-  const token = localStorage.getItem("access_token");
-  try {
-     await axios.post(`${import.meta.env.VITE_URL}createprogressreport/`, {
-      user: usrData["Email"],
-      title: Title,
-      description: Description,
-      task_id: task.id,
-      url : Url,
-      hours : Hours,
-
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-
-  } catch (error:any) {
-    console.log(error.response?.data?.detail || "Error"); // handle error properly
-  }
-};
-
-=======
   //{usrData["Username"]===row.getValue("assigned_by") || row.getValue("assigned_to").includes(usrData["Username"])?
   const handleProgress = async (e: any) => {
     e.preventDefault();
@@ -189,7 +161,6 @@ const handleProgress = async (e:any) => {
       console.log(error.response?.data?.detail || "Error"); // handle error properly
     }
   };
->>>>>>> bd260253f1d1f6324eb63de89660ee1084e87642
 
   const getprogressreports = async () => {
     const token = localStorage.getItem("access_token");
@@ -231,54 +202,6 @@ const handleProgress = async (e:any) => {
       {isFilePopupVisible && (
         <div className="fixed inset-0 flex justify-center z-50 bg-black bg-opacity-95">
           <div className="w-screen h-screen">
-<<<<<<< HEAD
-            <Button className="absolute right-4 top-4 hover:text-[red]" onClick={() => setFilePopupVisible(false)}>
-              close
-            </Button>
-            <form onSubmit={handleProgress}>
-            <div className="w-[50%] mx-auto mt-[10vh] my-auto">
-              <h1 className="text-left font-bold text-3xl mb-10">{task.title} -<br/> Progress Submission</h1>
-              <div className="flex">
-                <div className={`flex border w-fit px-[0.5vw] rounded-lg py-[0.25vh] mb-4`}><status.icon className="my-auto" /><h1 className={`text-xl ml-2 my-auto ${status.class}`}>{status.value}</h1></div>
-                <div className={`flex border w-fit px-[0.5vw] rounded-lg py-[0.25vh] mb-4 ml-4 `}><priority.icon className={`my-auto ${priority.class}`} /><h1 className={`text-xl ml-2 my-auto ${priority.class}`}>{priority.value}</h1></div>
-                </div>
-              <Label className="text-lg mt-[3vh] mb-1">Title</Label>
-              <input
-            type="text"
-            className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-full"
-            placeholder="Finished Home Page"
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <div className="block mt-[3vh]">
-          <Label className="text-lg mt-[3vh] mb-1">Description</Label>
-          <textarea className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] mb-[2vh] resize-none w-full" placeholder="Send messages to outside organizations for outreach" onChange={(e) => setDescription(e.target.value)} required  rows={2}></textarea>
-          
-          </div>
-          <Label className="text-lg mt-[3vh] mb-1">Progress Proof URL (Image/Video/Document etc)</Label>
-              <input
-            type="url"
-            className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-full mb-[3vh]"
-            placeholder="https://drive.google.com/..."
-            onChange={(e) => setUrl(e.target.value)}
-            required
-          />
-          <Label className="text-lg mb-1">Hours Spent</Label>
-              <input
-            type="number"
-            className="bg-black border-[0.5px] border-gray-500 rounded-lg px-[1vw] py-[1vh] w-full"
-            placeholder="5"
-            min="0"
-            max="100"
-            onChange={(e:any) => setHours(e.target.value)}
-            required
-          />
-          <Button type="submit" className="bg-white px-[15%] mt-[5vh] text-black w-fit mx-auto hover:bg-gray-100 transition-all">
-            Submit
-          </Button>
-              
-            </div>
-=======
             <Button
               className="absolute right-4 top-4 hover:text-[red]"
               onClick={() => setFilePopupVisible(false)}
@@ -351,7 +274,6 @@ const handleProgress = async (e:any) => {
                   Submit
                 </Button>
               </div>
->>>>>>> bd260253f1d1f6324eb63de89660ee1084e87642
             </form>
           </div>
         </div>
@@ -403,18 +325,12 @@ const handleProgress = async (e:any) => {
       {/* Popup for additional options */}
       {isMorePopupVisible && (
         <div className="fixed inset-0 flex justify-center z-50 bg-black bg-opacity-95">
-<<<<<<< HEAD
-          <div className="w-screen h-screen">
-            <Button className="absolute right-4 top-4 hover:text-[red]" onClick={() => setMorePopupVisible(false)}>
-              close
-=======
           <div className="w-screen h-screen overflow-y-scroll">
             <Button
               className="fixed right-4 top-4 hover:text-[red]"
               onClick={() => setMorePopupVisible(false)}
             >
               Close
->>>>>>> bd260253f1d1f6324eb63de89660ee1084e87642
             </Button>
             <div className="w-[60vw] mx-auto mt-[15vh] my-auto ">
               <h1 className="text-left font-bold text-4xl mb-16">
