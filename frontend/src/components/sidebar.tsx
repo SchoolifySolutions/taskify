@@ -70,7 +70,7 @@ export default function Sidebar(props: Props) {
             <a href="/" className="flex mx-auto w-fit mb-[2vh] user-select-class">
                 <img src={logo} className="mt-[5vh] w-[9vw] h-fit" alt="Logo"></img>
             </a>
-            <div className="w-full h-[90vh] relative">
+            <div className="w-full h-[84vh] relative">
                 <div className="absolute top-0 left-0 w-full h-0.25 bg-n-6 pointer-events-none" />
                 <ul className="flex flex-col w-fit ml-[2vw] pt-[2vh]">
                     {menuItems.map((item, index) => (
