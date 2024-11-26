@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { House, ClipboardList, ClipboardPen, ClipboardPenLine, Users } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import logo from "../assets/full-logo.png";
-import logo2 from "../assets/logo.png";
+import logo2 from "../assets/A__3_-removebg-preview.png";
 
 interface Props {
     name: string;
